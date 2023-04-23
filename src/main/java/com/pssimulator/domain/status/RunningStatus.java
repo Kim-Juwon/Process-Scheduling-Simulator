@@ -20,10 +20,6 @@ public class RunningStatus {
         return new RunningStatus(IntegerTime.createZero(), Pairs.createEmpty(), PowerConsumption.createZero());
     }
 
-    public boolean isProcessesExist() {
-        return !pairs.isEmpty();
-    }
-
     public IntegerTime getCurrentTime() {
         return currentTime;
     }
@@ -46,6 +42,10 @@ public class RunningStatus {
 
     public Processors getTerminatedProcessors() {
         return pairs.getTerminatedProcessors();
+    }
+
+    public Processors getProcessors() {
+        return pairs.getProcessors();
     }
 
     public void removeTerminatedPairs() {

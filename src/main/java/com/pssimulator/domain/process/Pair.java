@@ -18,4 +18,8 @@ public class Pair {
     public PowerConsumption updatePowerConsumptionOfProcessor() {
         return processor.increasePowerConsumption();
     }
+
+    public int compareTo(Pair pair) {
+        return processor.compareTo(pair.getProcessor());
+    }
 }

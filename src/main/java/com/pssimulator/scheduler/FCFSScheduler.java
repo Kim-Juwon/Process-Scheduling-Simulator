@@ -145,13 +145,22 @@ public class FCFSScheduler extends Scheduler {
     }
 
     private void addResultTo(Response response) {
-        response.addPairs(runningStatus.getPairs());
-        response.addTotalPowerConsumption(runningStatus.getTotalPowerConsumption());
-        response.addReadyQueue(readyQueue);
+        response.addPairsFrom(runningStatus.getPairs());
+        response.addProcessorPowerConsumptionsFrom(getAllProcessors());
+        response.addTotalPowerConsumptionFrom(runningStatus.getTotalPowerConsumption());
+        response.addReadyQueueFrom(readyQueue);
     }
 
     private void applyCurrentTimeStatusTo(Response response) {
         response.applyCurrentTimeStatus();
+    }
+
+    private Processors getAllProcessors() {
+        Processors allProcessors = Processors.createEmpty();
+        allProcessors.addProcessors(availableProcessors);
+        allProcessors.addProcessors(runningStatus.getProcessors());
+
+        return allProcessors;
     }
 
     private void increaseCurrentTime() {

@@ -3,14 +3,15 @@ package com.pssimulator.domain.process;
 import com.pssimulator.domain.processor.PowerConsumption;
 import com.pssimulator.domain.processor.Processor;
 import com.pssimulator.domain.processor.Processors;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
 @RequiredArgsConstructor
 public class Pairs {
     private final List<Pair> pairs;
@@ -25,10 +26,6 @@ public class Pairs {
 
     public void add(Pair pair) {
         pairs.add(pair);
-    }
-
-    public List<Pair> getPairs() {
-        return Collections.unmodifiableList(pairs);
     }
 
     public Processes getProcesses() {
@@ -95,5 +92,13 @@ public class Pairs {
         });
 
         return increasedPowerConsumption;
+    }
+
+    public Processors getProcessors() {
+        List<Processor> processors = pairs.stream()
+                .map(Pair::getProcessor)
+                .collect(Collectors.toList());
+
+        return Processors.fromProcessors(processors);
     }
 }

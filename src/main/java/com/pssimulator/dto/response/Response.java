@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pssimulator.domain.process.Pairs;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.PowerConsumption;
+import com.pssimulator.domain.processor.Processors;
 import com.pssimulator.domain.queue.ReadyQueue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,15 +44,19 @@ public class Response {
         currentTimeStatus = TimeStatusResponseDto.from(currentTime);
     }
 
-    public void addPairs(Pairs pairs) {
+    public void addPairsFrom(Pairs pairs) {
         currentTimeStatus.addPairs(pairs);
     }
 
-    public void addTotalPowerConsumption(PowerConsumption totalPowerConsumption) {
+    public void addProcessorPowerConsumptionsFrom(Processors processors) {
+        currentTimeStatus.addProcessorPowerConsumptions(processors);
+    }
+
+    public void addTotalPowerConsumptionFrom(PowerConsumption totalPowerConsumption) {
         currentTimeStatus.addTotalPowerConsumption(totalPowerConsumption);
     }
 
-    public void addReadyQueue(ReadyQueue readyQueue) {
+    public void addReadyQueueFrom(ReadyQueue readyQueue) {
         currentTimeStatus.addReadyQueue(readyQueue);
     }
 
