@@ -19,6 +19,7 @@ public class Process {
     private final IntegerTime turnaroundTime;
     private final DoubleTime normalizedTurnaroundTime;
     private final ResponseRatio responseRatio;
+    private final Workload initialWorkload;
 
     public static Process from(ProcessRequestDto dto) {
         return Process.builder()
@@ -30,6 +31,7 @@ public class Process {
                 .turnaroundTime(IntegerTime.createEmpty())
                 .normalizedTurnaroundTime(DoubleTime.createEmpty())
                 .responseRatio(ResponseRatio.createEmpty())
+                .initialWorkload(Workload.from(dto.getWorkload()))
                 .build();
     }
 
@@ -48,6 +50,10 @@ public class Process {
     public void updateWorkloadAndBurstTimeFrom(Processor processor) {
         workload.decreaseBy(processor.getThroughputPerSecond());
         burstTime.increase();
+    }
+
+    public void calculateResponseRatio() {
+        responseRatio.changeFrom(waitingTime, initialWorkload);
     }
 
     public void calculateResult() {
@@ -69,5 +75,9 @@ public class Process {
 
     public int compareBySPN(Process process) {
         return workload.compare(process.getWorkload());
+    }
+
+    public int compareByHRRN(Process process) {
+        return responseRatio.compare(process.getResponseRatio());
     }
 }

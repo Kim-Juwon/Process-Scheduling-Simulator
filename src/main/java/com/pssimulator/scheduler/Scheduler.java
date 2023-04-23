@@ -28,6 +28,9 @@ public abstract class Scheduler {
         if (algorithm.equals(AlgorithmDto.SPN)) {
             return SPNScheduler.from(request);
         }
+        if (algorithm.equals(AlgorithmDto.HRRN)) {
+            return HRRNScheduler.from(request);
+        }
 
         return null;
     }
