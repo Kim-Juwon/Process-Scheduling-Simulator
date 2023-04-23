@@ -9,6 +9,7 @@ import com.pssimulator.domain.processor.Processor;
 import com.pssimulator.domain.processor.Processors;
 import com.pssimulator.domain.queue.FCFSReadyQueue;
 import com.pssimulator.domain.queue.ReadyQueue;
+import com.pssimulator.domain.queue.SPNReadyQueue;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -65,6 +66,14 @@ public class TimeStatusResponseDto {
         if (readyQueue instanceof FCFSReadyQueue) {
             FCFSReadyQueue fcfsReadyQueue = (FCFSReadyQueue) readyQueue;
             List<Process> processes = new ArrayList<>(fcfsReadyQueue.getReadyQueue());
+
+            processes.forEach(process -> {
+                this.readyQueue.add(process.getName());
+            });
+        }
+        if (readyQueue instanceof SPNReadyQueue) {
+            SPNReadyQueue spnReadyQueue = (SPNReadyQueue) readyQueue;
+            List<Process> processes = spnReadyQueue.getProcessListAboutPriorityQueue();
 
             processes.forEach(process -> {
                 this.readyQueue.add(process.getName());

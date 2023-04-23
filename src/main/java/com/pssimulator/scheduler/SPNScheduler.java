@@ -5,20 +5,19 @@ import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.Processor;
 import com.pssimulator.domain.processor.Processors;
-import com.pssimulator.domain.queue.FCFSReadyQueue;
+import com.pssimulator.domain.queue.SPNReadyQueue;
 import com.pssimulator.domain.status.RunningStatus;
 import com.pssimulator.dto.request.Request;
 import com.pssimulator.dto.response.Response;
 
-public class FCFSScheduler extends Scheduler {
-    private FCFSScheduler(FCFSReadyQueue fcfsReadyQueue, Processes processes,
-                          Processors processors, RunningStatus runningStatus) {
-        super(fcfsReadyQueue, processes, processors, runningStatus);
+public class SPNScheduler extends Scheduler {
+    private SPNScheduler(SPNReadyQueue spnReadyQueue, Processes processes, Processors processors, RunningStatus runningStatus) {
+        super(spnReadyQueue, processes, processors, runningStatus);
     }
 
-    public static FCFSScheduler from(Request request) {
-        return new FCFSScheduler(
-                FCFSReadyQueue.createEmpty(),
+    public static SPNScheduler from(Request request) {
+        return new SPNScheduler(
+                SPNReadyQueue.createEmpty(),
                 Processes.from(request.getProcesses()),
                 Processors.from(request.getProcessors()),
                 RunningStatus.create()

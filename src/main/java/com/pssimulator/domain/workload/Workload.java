@@ -27,4 +27,8 @@ public class Workload {
             this.workload = 0;
         }
     }
+
+    public int compare(Workload workload) {
+        return this.workload - workload.getWorkload();
+    }
 }

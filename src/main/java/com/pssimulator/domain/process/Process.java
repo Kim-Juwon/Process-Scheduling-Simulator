@@ -66,4 +66,8 @@ public class Process {
         DoubleTime calculatedTime = turnaroundTime.divide(burstTime);
         normalizedTurnaroundTime.changeTo(calculatedTime);
     }
+
+    public int compareBySPN(Process process) {
+        return workload.compare(process.getWorkload());
+    }
 }
