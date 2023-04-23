@@ -53,10 +53,9 @@ public class Processors {
             return null;
         }
 
-        return processors.get(FRONT);
-    }
-
-    public void removeFront() {
+        Processor nextProcessor = processors.get(FRONT);
         processors.remove(FRONT);
+
+        return nextProcessor;
     }
 }

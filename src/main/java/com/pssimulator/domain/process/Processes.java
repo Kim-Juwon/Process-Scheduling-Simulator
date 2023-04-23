@@ -3,6 +3,7 @@ package com.pssimulator.domain.process;
 import com.pssimulator.domain.time.IntegerTime;
 import com.pssimulator.dto.request.ProcessRequestDto;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class Processes {
     }
 
     public List<Process> getArrivedProcessesAt(IntegerTime time) {
-        List<Process> arrivedProcesses = new LinkedList<>();
+        List<Process> arrivedProcesses = new ArrayList<>();
 
         for (int i = 0; i < processes.size(); i++) {
             Process process = processes.get(i);

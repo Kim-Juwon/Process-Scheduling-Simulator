@@ -1,6 +1,5 @@
 package com.pssimulator.domain.process;
 
-import com.pssimulator.domain.processor.Core;
 import com.pssimulator.domain.processor.Processor;
 import com.pssimulator.domain.ratio.ResponseRatio;
 import com.pssimulator.domain.time.DoubleTime;

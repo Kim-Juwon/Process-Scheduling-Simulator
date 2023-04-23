@@ -31,17 +31,15 @@ public class FCFSScheduler extends Scheduler {
         while (isRemainingProcessExist()) {
             addArrivedProcessesToReadyQueue();
 
-            if (isRunningProcessExist()) {
-                if (isTerminatedRunningProcessExist()) {
-                    Processes terminatedRunningProcesses = getTerminatedRunningProcesses();
-                    Processors terminatedProcessors = getTerminatedRunningProcessors();
-                    removeTerminatedProcessesAndProcessorsFromRunningStatus();
+            if (isTerminatedRunningProcessExist()) {
+                Processes terminatedRunningProcesses = getTerminatedRunningProcesses();
+                Processors terminatedProcessors = getTerminatedRunningProcessors();
+                removeTerminatedPairsFromRunningStatus();
 
-                    terminatedRunningProcesses.calculateResult();
+                terminatedRunningProcesses.calculateResult();
 
-                    response.addTerminatedProcessesFrom(terminatedRunningProcesses);
-                    bringProcessorsBackFrom(terminatedProcessors);
-                }
+                response.addTerminatedProcessesFrom(terminatedRunningProcesses);
+                bringProcessorsBackFrom(terminatedProcessors);
             }
 
             if (isProcessExistInReadyQueue()) {
@@ -52,12 +50,10 @@ public class FCFSScheduler extends Scheduler {
             updateWorkloadAndBurstTimeOfRunningProcesses();
             updatePowerConsumption();
 
-            response.addPairs(runningStatus.getPairs());
-            response.addTotalPowerConsumption(runningStatus.getTotalPowerConsumption());
-            response.addReadyQueue(readyQueue);
+            addResultTo(response);
+            applyCurrentTimeStatusTo(response);
 
-            response.applyCurrentTimeStatus();
-            runningStatus.increaseCurrentTime();
+            increaseCurrentTime();
         }
 
         return response;
@@ -69,10 +65,6 @@ public class FCFSScheduler extends Scheduler {
 
     private void addArrivedProcessesToReadyQueue() {
         readyQueue.addArrivedProcessesFrom(notArrivedProcesses, runningStatus.getCurrentTime());
-    }
-
-    private boolean isRunningProcessExist() {
-        return runningStatus.isProcessesExist();
     }
 
     private boolean isTerminatedRunningProcessExist() {
@@ -87,7 +79,7 @@ public class FCFSScheduler extends Scheduler {
         return runningStatus.getTerminatedProcessors();
     }
 
-    private void removeTerminatedProcessesAndProcessorsFromRunningStatus() {
+    private void removeTerminatedPairsFromRunningStatus() {
         runningStatus.removeTerminatedPairs();
     }
 
@@ -114,15 +106,13 @@ public class FCFSScheduler extends Scheduler {
 
     private void assignProcessorsToProcessesAndRegisterToRunningStatus() {
         while (isAvailableProcessorExist()) {
-            Processor nextProcessor = getNextAvailableProcessor();
-
             if (isReadyQueueEmpty()) {
                 break;
             }
 
-            availableProcessors.removeFront();
-            Process readyProcess = getNextReadyProcess();
-            runningStatus.addPair(Pair.of(readyProcess, nextProcessor));
+            Processor nextProcessor = getNextAvailableProcessor();
+            Process nextProcess = getNextReadyProcess();
+            changeToRunningStatus(Pair.of(nextProcess, nextProcessor));
         }
     }
 
@@ -138,6 +128,10 @@ public class FCFSScheduler extends Scheduler {
         return readyQueue.getNextProcess();
     }
 
+    private void changeToRunningStatus(Pair pair) {
+        runningStatus.addPair(pair);
+    }
+
     private void increaseWaitingTimeOfProcessesInReadyQueue() {
         readyQueue.increaseWaitingTimeOfProcesses();
     }
@@ -148,5 +142,19 @@ public class FCFSScheduler extends Scheduler {
 
     private void updatePowerConsumption() {
         runningStatus.updatePowerConsumption();
+    }
+
+    private void addResultTo(Response response) {
+        response.addPairs(runningStatus.getPairs());
+        response.addTotalPowerConsumption(runningStatus.getTotalPowerConsumption());
+        response.addReadyQueue(readyQueue);
+    }
+
+    private void applyCurrentTimeStatusTo(Response response) {
+        response.applyCurrentTimeStatus();
+    }
+
+    private void increaseCurrentTime() {
+        runningStatus.increaseCurrentTime();
     }
 }
