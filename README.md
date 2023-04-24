@@ -41,6 +41,24 @@
   - OSDS
 ### Time quantum
 
+## Response
+- For each time range
+### Time
+- fromTime, toTime (range)
+
+### Pairs
+- pair list
+- one pair is (process, processor)
+- this means, process assigned to processor
+
+### ProcessorPowerConsumptions
+
+### TotalPowerConsumption
+
+### Ready queue
+
+### Terminated Processes
+
 ## Algorithm Flow chart
 ### FCFS (First-Come-First-Service)
 ![image](https://user-images.githubusercontent.com/56067949/234043216-a8b9fe92-1bed-49a7-bea9-2b6eafd22bcd.png)
