@@ -31,6 +31,9 @@ public abstract class Scheduler {
         if (algorithm.equals(AlgorithmDto.HRRN)) {
             return HRRNScheduler.from(request);
         }
+        if (algorithm.equals(AlgorithmDto.RR)) {
+            return RRScheduler.from(request);
+        }
 
         return null;
     }

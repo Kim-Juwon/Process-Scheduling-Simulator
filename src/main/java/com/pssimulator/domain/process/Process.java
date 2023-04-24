@@ -20,6 +20,7 @@ public class Process {
     private final DoubleTime normalizedTurnaroundTime;
     private final ResponseRatio responseRatio;
     private final Workload initialWorkload;
+    private final IntegerTime runningBurstTime;
 
     public static Process from(ProcessRequestDto dto) {
         return Process.builder()
@@ -32,6 +33,7 @@ public class Process {
                 .normalizedTurnaroundTime(DoubleTime.createEmpty())
                 .responseRatio(ResponseRatio.createEmpty())
                 .initialWorkload(Workload.from(dto.getWorkload()))
+                .runningBurstTime(IntegerTime.createZero())
                 .build();
     }
 
@@ -47,9 +49,18 @@ public class Process {
         waitingTime.increase();
     }
 
+    public boolean isTimeQuantumExpired(IntegerTime timeQuantum) {
+        return runningBurstTime.equals(timeQuantum);
+    }
+
+    public void initializeRunningBurstTime() {
+        runningBurstTime.changeToZero();
+    }
+
     public void updateWorkloadAndBurstTimeFrom(Processor processor) {
         workload.decreaseBy(processor.getThroughputPerSecond());
         burstTime.increase();
+        runningBurstTime.increase();
     }
 
     public void calculateResponseRatio() {

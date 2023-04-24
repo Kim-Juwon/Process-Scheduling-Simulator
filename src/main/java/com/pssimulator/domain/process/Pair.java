@@ -2,6 +2,7 @@ package com.pssimulator.domain.process;
 
 import com.pssimulator.domain.processor.PowerConsumption;
 import com.pssimulator.domain.processor.Processor;
+import com.pssimulator.domain.time.IntegerTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +18,10 @@ public class Pair {
 
     public PowerConsumption updatePowerConsumptionOfProcessor() {
         return processor.increasePowerConsumption();
+    }
+
+    public boolean isProcessTimeQuantumExpired(IntegerTime timeQuantum) {
+        return process.isTimeQuantumExpired(timeQuantum);
     }
 
     public int compareTo(Pair pair) {

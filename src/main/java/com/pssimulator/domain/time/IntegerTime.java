@@ -40,6 +40,10 @@ public class IntegerTime {
         this.second = time.getSecond();
     }
 
+    public void changeToZero() {
+        this.second = ZERO;
+    }
+
     public IntegerTime add(IntegerTime time) {
         return IntegerTime.from(second + time.getSecond());
     }

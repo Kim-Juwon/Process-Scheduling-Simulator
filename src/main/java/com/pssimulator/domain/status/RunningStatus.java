@@ -52,6 +52,10 @@ public class RunningStatus {
         pairs.removeTerminatedPairs();
     }
 
+    public void removeTimeQuantumExpiredPairs(IntegerTime timeQuantum) {
+        pairs.removeTimeQuantumExpiredPairs(timeQuantum);
+    }
+
     public void updateWorkloadAndBurstTimeOfProcesses() {
         pairs.updateWorkloadAndBurstTimeOfProcesses();
     }
@@ -71,6 +75,18 @@ public class RunningStatus {
 
     public void increaseCurrentTime() {
         currentTime.increase();
+    }
+
+    public boolean isTimeQuantumExpiredProcessExist(IntegerTime timeQuantum) {
+        return pairs.isTimeQuantumExpiredProcessExist(timeQuantum);
+    }
+
+    public Processes getTimeQuantumExpiredProcesses(IntegerTime timeQuantum) {
+        return pairs.getTimeQuantumExpiredProcesses(timeQuantum);
+    }
+
+    public Processors getProcessorsAboutTimeQuantumExpiredProcesses(IntegerTime timeQuantum) {
+        return pairs.getProcessorsAboutTimeQuantumExpiredProcesses(timeQuantum);
     }
 }
 

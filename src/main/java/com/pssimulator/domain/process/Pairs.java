@@ -3,6 +3,7 @@ package com.pssimulator.domain.process;
 import com.pssimulator.domain.processor.PowerConsumption;
 import com.pssimulator.domain.processor.Processor;
 import com.pssimulator.domain.processor.Processors;
+import com.pssimulator.domain.time.IntegerTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -80,6 +81,17 @@ public class Pairs {
         }
     }
 
+    public void removeTimeQuantumExpiredPairs(IntegerTime timeQuantum) {
+        for (int i = 0; i < pairs.size(); i++) {
+            Pair pair = pairs.get(i);
+
+            if (pair.isProcessTimeQuantumExpired(timeQuantum)) {
+                pairs.remove(i);
+                i--;
+            }
+        }
+    }
+
     public void updateWorkloadAndBurstTimeOfProcesses() {
         pairs.forEach(Pair::updateWorkloadAndBurstTimeOfProcess);
     }
@@ -96,6 +108,29 @@ public class Pairs {
 
     public Processors getProcessors() {
         List<Processor> processors = pairs.stream()
+                .map(Pair::getProcessor)
+                .collect(Collectors.toList());
+
+        return Processors.fromProcessors(processors);
+    }
+
+    public boolean isTimeQuantumExpiredProcessExist(IntegerTime timeQuantum) {
+        return pairs.stream()
+                .anyMatch(pair -> pair.isProcessTimeQuantumExpired(timeQuantum));
+    }
+
+    public Processes getTimeQuantumExpiredProcesses(IntegerTime timeQuantum) {
+        List<Process> timeQuantumExpiredProcesses = pairs.stream()
+                .filter(pair -> pair.isProcessTimeQuantumExpired(timeQuantum))
+                .map(Pair::getProcess)
+                .collect(Collectors.toList());
+
+        return Processes.fromProcesses(timeQuantumExpiredProcesses);
+    }
+
+    public Processors getProcessorsAboutTimeQuantumExpiredProcesses(IntegerTime timeQuantum) {
+        List<Processor> processors = pairs.stream()
+                .filter(pair -> pair.isProcessTimeQuantumExpired(timeQuantum))
                 .map(Pair::getProcessor)
                 .collect(Collectors.toList());
 
