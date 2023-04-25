@@ -25,15 +25,19 @@ public abstract class Scheduler {
         if (algorithm.equals(AlgorithmDto.FCFS)) {
             return FCFSScheduler.from(request);
         }
+        if (algorithm.equals(AlgorithmDto.RR)) {
+            return RRScheduler.from(request);
+        }
         if (algorithm.equals(AlgorithmDto.SPN)) {
             return SPNScheduler.from(request);
+        }
+        if (algorithm.equals(AlgorithmDto.SRTN)) {
+            return SRTNScheduler.from(request);
         }
         if (algorithm.equals(AlgorithmDto.HRRN)) {
             return HRRNScheduler.from(request);
         }
-        if (algorithm.equals(AlgorithmDto.RR)) {
-            return RRScheduler.from(request);
-        }
+
 
         return null;
     }

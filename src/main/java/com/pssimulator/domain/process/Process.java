@@ -11,16 +11,16 @@ import lombok.Getter;
 
 @Getter @Builder
 public class Process {
-    private final String name;
-    private final IntegerTime arrivalTime;
-    private final IntegerTime burstTime;
-    private final Workload workload;
-    private final IntegerTime waitingTime;
-    private final IntegerTime turnaroundTime;
-    private final DoubleTime normalizedTurnaroundTime;
-    private final ResponseRatio responseRatio;
-    private final Workload initialWorkload;
-    private final IntegerTime runningBurstTime;
+    private final String name; // 이름
+    private final IntegerTime arrivalTime; // 도착 시간
+    private final IntegerTime burstTime; // 총 수행 시간
+    private final Workload workload; // 남은 작업량
+    private final IntegerTime waitingTime; // 총 대기 시간
+    private final IntegerTime turnaroundTime; // waitingTime + burstTime
+    private final DoubleTime normalizedTurnaroundTime; // turnaroundTime / burstTime
+    private final ResponseRatio responseRatio; // (waitingTime + workload) / workload
+    private final Workload initialWorkload; // 최초 workload
+    private final IntegerTime runningBurstTime; // preemption 되기 전까지 수행된 시간
 
     public static Process from(ProcessRequestDto dto) {
         return Process.builder()
@@ -51,6 +51,10 @@ public class Process {
 
     public boolean isTimeQuantumExpired(IntegerTime timeQuantum) {
         return runningBurstTime.equals(timeQuantum);
+    }
+
+    public boolean isRemainingWorkloadBiggerThan(Process process) {
+        return workload.isBiggerThan(process.getWorkload());
     }
 
     public void initializeRunningBurstTime() {
@@ -85,6 +89,10 @@ public class Process {
     }
 
     public int compareBySPN(Process process) {
+        return workload.compare(process.getWorkload());
+    }
+
+    public int compareBySRTN(Process process) {
         return workload.compare(process.getWorkload());
     }
 

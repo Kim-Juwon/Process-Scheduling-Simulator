@@ -3,6 +3,7 @@ package com.pssimulator.domain.process;
 import com.pssimulator.domain.processor.PowerConsumption;
 import com.pssimulator.domain.processor.Processor;
 import com.pssimulator.domain.processor.Processors;
+import com.pssimulator.domain.queue.ReadyQueue;
 import com.pssimulator.domain.time.IntegerTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -135,5 +136,21 @@ public class Pairs {
                 .collect(Collectors.toList());
 
         return Processors.fromProcessors(processors);
+    }
+
+    public boolean isLessRemainingWorkloadProcessExistFrom(ReadyQueue readyQueue) {
+        return readyQueue.peekCurrentProcesses().stream()
+                .anyMatch(processInReadyQueue -> pairs.stream()
+                        .anyMatch(pair -> pair.isProcessRemainingWorkloadBiggerThan(processInReadyQueue))
+                );
+    }
+
+    public Processes getBiggerWorkloadProcessesComparedWith(ReadyQueue readyQueue) {
+        /*readyQueue.peekCurrentProcesses().forEach(processInReadyQueue -> {
+            pairs.forEach(pair -> {
+                if (pair.isProcessRemainingWorkloadBiggerThan())
+            });
+        });*/
+        return null;
     }
 }

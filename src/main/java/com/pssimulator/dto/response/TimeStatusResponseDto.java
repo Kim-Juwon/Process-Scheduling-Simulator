@@ -65,38 +65,10 @@ public class TimeStatusResponseDto {
     }
 
     public void addReadyQueue(ReadyQueue readyQueue) {
-        if (readyQueue instanceof FCFSReadyQueue) {
-            FCFSReadyQueue fcfsReadyQueue = (FCFSReadyQueue) readyQueue;
-            List<Process> processes = new ArrayList<>(fcfsReadyQueue.getReadyQueue());
-
-            processes.forEach(process -> {
-                this.readyQueue.add(process.getName());
-            });
-        }
-        if (readyQueue instanceof SPNReadyQueue) {
-            SPNReadyQueue spnReadyQueue = (SPNReadyQueue) readyQueue;
-            List<Process> processes = spnReadyQueue.getProcessListAboutPriorityQueue();
-
-            processes.forEach(process -> {
-                this.readyQueue.add(process.getName());
-            });
-        }
-        if (readyQueue instanceof HRRNReadyQueue) {
-            HRRNReadyQueue hrrnReadyQueue = (HRRNReadyQueue) readyQueue;
-            List<Process> processes = hrrnReadyQueue.getProcessListAboutPriorityQueue();
-
-            processes.forEach(process -> {
-                this.readyQueue.add(process.getName());
-            });
-        }
-        if (readyQueue instanceof RRReadyQueue) {
-            RRReadyQueue rrReadyQueue = (RRReadyQueue) readyQueue;
-            List<Process> processes = new ArrayList<>(rrReadyQueue.getReadyQueue());
-
-            processes.forEach(process -> {
-                this.readyQueue.add(process.getName());
-            });
-        }
+        List<Process> processes = readyQueue.peekCurrentProcesses();
+        processes.forEach(process -> {
+            this.readyQueue.add(process.getName());
+        });
     }
 
     public void addTerminatedProcessesFrom(Processes terminatedProcesses) {

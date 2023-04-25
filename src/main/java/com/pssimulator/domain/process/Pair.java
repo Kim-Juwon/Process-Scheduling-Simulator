@@ -24,6 +24,10 @@ public class Pair {
         return process.isTimeQuantumExpired(timeQuantum);
     }
 
+    public boolean isProcessRemainingWorkloadBiggerThan(Process process) {
+        return this.process.isRemainingWorkloadBiggerThan(process);
+    }
+
     public int compareTo(Pair pair) {
         return processor.compareTo(pair.getProcessor());
     }

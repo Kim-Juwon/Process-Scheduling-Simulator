@@ -49,6 +49,19 @@ public class RRReadyQueue extends ReadyQueue {
         readyQueue.addAll(processes);
     }
 
+    @Override
+    public List<Process> peekCurrentProcesses() {
+        List<Process> processes = new ArrayList<>();
+
+        while (!readyQueue.isEmpty()) {
+            processes.add(readyQueue.poll());
+        }
+
+        readyQueue.addAll(processes);
+
+        return processes;
+    }
+
     public void addPreemptedProcesses(Processes preemptedProcesses) {
         readyQueue.addAll(preemptedProcesses.getProcesses());
     }

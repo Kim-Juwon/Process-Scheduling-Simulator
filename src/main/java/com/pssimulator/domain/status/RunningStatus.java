@@ -2,12 +2,16 @@ package com.pssimulator.domain.status;
 
 import com.pssimulator.domain.process.Pair;
 import com.pssimulator.domain.process.Pairs;
+import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.PowerConsumption;
 import com.pssimulator.domain.processor.Processors;
+import com.pssimulator.domain.queue.ReadyQueue;
 import com.pssimulator.domain.time.IntegerTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
@@ -87,6 +91,14 @@ public class RunningStatus {
 
     public Processors getProcessorsAboutTimeQuantumExpiredProcesses(IntegerTime timeQuantum) {
         return pairs.getProcessorsAboutTimeQuantumExpiredProcesses(timeQuantum);
+    }
+
+    public boolean isLessRemainingWorkloadProcessExistIn(ReadyQueue readyQueue) {
+        return pairs.isLessRemainingWorkloadProcessExistFrom(readyQueue);
+    }
+
+    public Processes getBiggerWorkloadProcessesComparedWith(ReadyQueue readyQueue) {
+        return pairs.getBiggerWorkloadProcessesComparedWith(readyQueue);
     }
 }
 

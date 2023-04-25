@@ -3,19 +3,21 @@ package com.pssimulator.domain.queue;
 import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.time.IntegerTime;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
+@Getter
 @RequiredArgsConstructor
-public class FCFSReadyQueue extends ReadyQueue {
+public class SRTNReadyQueue extends ReadyQueue {
     private final Queue<Process> readyQueue;
 
-    public static FCFSReadyQueue createEmpty() {
-        return new FCFSReadyQueue(new LinkedList<>());
+    public static SRTNReadyQueue createEmpty() {
+        return new SRTNReadyQueue(new PriorityQueue<>(Process::compareBySRTN));
     }
 
     @Override
@@ -24,8 +26,8 @@ public class FCFSReadyQueue extends ReadyQueue {
     }
 
     @Override
-    public void addArrivedProcessesFrom(Processes processes, IntegerTime time) {
-        List<Process> arrivedProcesses = processes.getArrivedProcessesAt(time);
+    public void addArrivedProcessesFrom(Processes processes, IntegerTime currentTime) {
+        List<Process> arrivedProcesses = processes.getArrivedProcessesAt(currentTime);
         readyQueue.addAll(arrivedProcesses);
     }
 

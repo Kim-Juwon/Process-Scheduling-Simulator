@@ -52,7 +52,8 @@ public class HRRNReadyQueue extends ReadyQueue {
         readyQueue.addAll(processes);
     }
 
-    public List<Process> getProcessListAboutPriorityQueue() {
+    @Override
+    public List<Process> peekCurrentProcesses() {
         List<Process> processes = new ArrayList<>();
 
         while (!readyQueue.isEmpty()) {
