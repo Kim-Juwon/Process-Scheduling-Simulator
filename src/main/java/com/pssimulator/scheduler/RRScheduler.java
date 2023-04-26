@@ -193,7 +193,7 @@ public class RRScheduler extends Scheduler {
     }
 
     private void applyCurrentTimeStatusTo(Response response) {
-        response.applyCurrentTimeStatus();
+        response.apply();
     }
 
     private Processors getAllProcessors() {

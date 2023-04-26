@@ -153,7 +153,7 @@ public class FCFSScheduler extends Scheduler {
     }
 
     private void applyCurrentTimeStatusTo(Response response) {
-        response.applyCurrentTimeStatus();
+        response.apply();
     }
 
     private Processors getAllProcessors() {

@@ -1,11 +1,8 @@
 package com.pssimulator.dto.response;
 
-import com.pssimulator.domain.process.Pair;
 import com.pssimulator.domain.process.Pairs;
-import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.PowerConsumption;
-import com.pssimulator.domain.processor.Processor;
 import com.pssimulator.domain.processor.Processors;
 import com.pssimulator.domain.queue.ReadyQueue;
 import lombok.AccessLevel;
@@ -37,17 +34,14 @@ public class TimeStatusResponseDto {
         restingProcessors.getProcessors().forEach(restingProcessor -> {
             this.pairs.add(PairResponseDto.from(restingProcessor));
         });
-
         this.pairs.sort(PairResponseDto::compareByProcessorNameAscending);
     }
 
     public void addProcessorPowerConsumptions(Processors allProcessors) {
-        List<Processor> processors = allProcessors.getProcessors();
-        processors.sort(Processor::compareByNameDescending);
-
-        processors.forEach(processor -> {
+        allProcessors.getProcessors().forEach(processor -> {
             processorPowerConsumptions.add(ProcessorPowerConsumptionDto.from(processor));
         });
+        processorPowerConsumptions.sort(ProcessorPowerConsumptionDto::compareByProcessorNameAscending);
     }
 
     public void addTotalPowerConsumption(PowerConsumption totalPowerConsumption) {
@@ -55,17 +49,15 @@ public class TimeStatusResponseDto {
     }
 
     public void addReadyQueue(ReadyQueue readyQueue) {
-        List<Process> processes = readyQueue.peekCurrentProcesses();
-        processes.forEach(process -> {
+        readyQueue.peekCurrentProcesses().forEach(process -> {
             this.readyQueue.add(process.getName());
         });
     }
 
     public void addTerminatedProcessesFrom(Processes terminatedProcesses) {
-        List<Process> processes = terminatedProcesses.getProcesses();
-
-        processes.forEach(process -> {
+        terminatedProcesses.getProcesses().forEach(process -> {
             this.terminatedProcesses.add(ProcessResponseDto.from(process));
         });
+        this.terminatedProcesses.sort(ProcessResponseDto::compareByNameAscending);
     }
 }

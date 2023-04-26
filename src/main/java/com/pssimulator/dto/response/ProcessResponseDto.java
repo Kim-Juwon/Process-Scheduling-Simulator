@@ -23,4 +23,8 @@ public class ProcessResponseDto {
                 .normalizedTurnaroundTime(process.getNormalizedTurnaroundTime().getSecond())
                 .build();
     }
+
+    public int compareByNameAscending(ProcessResponseDto processResponseDto) {
+        return name.compareTo(processResponseDto.getName());
+    }
 }

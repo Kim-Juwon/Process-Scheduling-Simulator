@@ -152,7 +152,7 @@ public class HRRNScheduler extends Scheduler {
     }
 
     private void applyCurrentTimeStatusTo(Response response) {
-        response.applyCurrentTimeStatus();
+        response.apply();
     }
 
     private Processors getAllProcessors() {

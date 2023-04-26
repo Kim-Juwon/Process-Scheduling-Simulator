@@ -15,6 +15,8 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class Response {
+    private static final Integer START_TIME = 1;
+
     private final List<TimeStatusResponseDto> statuses;
 
     @JsonIgnore
@@ -23,25 +25,25 @@ public class Response {
     private Integer currentTime;
 
     public static Response create() {
-        return new Response(new ArrayList<>(), TimeStatusResponseDto.from(1), 1);
+        return new Response(new ArrayList<>(), TimeStatusResponseDto.from(START_TIME), START_TIME);
     }
 
-    public void applyCurrentTimeStatus() {
-        statuses.add(currentTimeStatus);
+    public void apply() {
+        addCurrentTimeStatusFrom(currentTimeStatus);
         moveToNextTime();
-    }
-
-    private void moveToNextTime() {
-        increaseCurrentTime();
         initializeCurrentTimeStatus();
     }
 
-    private void increaseCurrentTime() {
+    private void moveToNextTime() {
         ++currentTime;
     }
 
     private void initializeCurrentTimeStatus() {
         currentTimeStatus = TimeStatusResponseDto.from(currentTime);
+    }
+
+    private void addCurrentTimeStatusFrom(TimeStatusResponseDto timeStatusResponseDto) {
+        statuses.add(timeStatusResponseDto);
     }
 
     public void addRunningStateFrom(Pairs runningPairs, Processors restingProcessors) {

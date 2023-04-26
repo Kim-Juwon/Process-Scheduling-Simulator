@@ -13,4 +13,8 @@ public class ProcessorPowerConsumptionDto {
     public static ProcessorPowerConsumptionDto from(Processor processor) {
         return new ProcessorPowerConsumptionDto(processor.getName(), processor.getTotalPowerConsumption().getPowerConsumption());
     }
+
+    public int compareByProcessorNameAscending(ProcessorPowerConsumptionDto processorPowerConsumptionDto) {
+        return processorName.compareTo(processorPowerConsumptionDto.getProcessorName());
+    }
 }
