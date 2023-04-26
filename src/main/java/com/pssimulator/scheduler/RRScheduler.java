@@ -186,7 +186,7 @@ public class RRScheduler extends Scheduler {
     }
 
     private void addResultTo(Response response) {
-        response.addPairsFrom(runningStatus.getPairs());
+        response.addRunningStateFrom(runningStatus.getPairs(), availableProcessors);
         response.addProcessorPowerConsumptionsFrom(getAllProcessors());
         response.addTotalPowerConsumptionFrom(runningStatus.getTotalPowerConsumption());
         response.addReadyQueueFrom(readyQueue);

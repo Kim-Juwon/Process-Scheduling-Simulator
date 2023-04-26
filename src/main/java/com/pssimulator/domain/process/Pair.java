@@ -29,7 +29,7 @@ public class Pair {
     }
 
     public int compareByProcessorName(Pair pair) {
-        return processor.compareTo(pair.getProcessor());
+        return processor.compareByNameDescending(pair.getProcessor());
     }
 
     public int compareByProcessRemainingWorkloadDescending(Pair pair) {

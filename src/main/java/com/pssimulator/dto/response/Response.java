@@ -44,8 +44,8 @@ public class Response {
         currentTimeStatus = TimeStatusResponseDto.from(currentTime);
     }
 
-    public void addPairsFrom(Pairs pairs) {
-        currentTimeStatus.addPairs(pairs);
+    public void addRunningStateFrom(Pairs runningPairs, Processors restingProcessors) {
+        currentTimeStatus.addRunningStateFrom(runningPairs, restingProcessors);
     }
 
     public void addProcessorPowerConsumptionsFrom(Processors processors) {

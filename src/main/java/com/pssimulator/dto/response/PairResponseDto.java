@@ -1,6 +1,7 @@
 package com.pssimulator.dto.response;
 
 import com.pssimulator.domain.process.Pair;
+import com.pssimulator.domain.processor.Processor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -12,5 +13,13 @@ public class PairResponseDto {
 
     public static PairResponseDto from(Pair pair) {
         return new PairResponseDto(pair.getProcessor().getName(), pair.getProcess().getName());
+    }
+
+    public static PairResponseDto from(Processor processor) {
+        return new PairResponseDto(processor.getName(), null);
+    }
+
+    public int compareByProcessorNameAscending(PairResponseDto pairResponseDto) {
+        return processorName.compareTo(pairResponseDto.getProcessorName());
     }
 }

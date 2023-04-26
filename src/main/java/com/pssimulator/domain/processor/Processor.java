@@ -47,7 +47,7 @@ public class Processor {
         startupRequired = false;
     }
 
-    public int compareTo(Processor processor) {
+    public int compareByNameDescending(Processor processor) {
         return name.compareTo(processor.getName());
     }
 }
