@@ -1,5 +1,8 @@
-# Process-Scheduling-Simulator
-2023학년도 1학기 운영체제 Process Scheduling Simulator
+# Process-Scheduling-Simulator-API
+2023학년도 1학기 운영체제 Process Scheduling Simulator API
+
+## developer
+- KimJuwon
 
 ## 대상 알고리즘
 - [FCFS (First-Come-First-Service)](https://ko.wikipedia.org/wiki/%EC%84%A0%EC%9E%85_%EC%84%A0%EC%B6%9C)
@@ -81,7 +84,7 @@
 ```
 
 ## Response
-- Information by time slice
+- List of information by time slice
 
 ### from
 - start time
@@ -99,8 +102,8 @@
 ### ProcessorPowerConsumptions
 - List of total power consumption by processor
 - properties per pairs
-  - processorName
-  - totalPowerConsumption
+  - **processorName**
+  - **totalPowerConsumption**
 
 ### TotalPowerConsumption
 - Sum of the total power consumption of all processors
@@ -113,12 +116,12 @@
 ### Terminated Processes
 - List of terminated process
 - properties per process
-  - name
-  - arrivalTime
-  - burstTime
-  - waitingTime
-  - turnaroundTime
-  - normalizedTurnaroundTime
+  - **name**
+  - **arrivalTime**
+  - **burstTime**
+  - **waitingTime**
+  - **turnaroundTime**
+  - **normalizedTurnaroundTime**
 
 ### Response JSON Example
 
@@ -262,7 +265,6 @@
 }
 ```
 
-
 ## Algorithm Flow chart
 ### FCFS (First-Come-First-Service)
 ![image](https://user-images.githubusercontent.com/56067949/234043216-a8b9fe92-1bed-49a7-bea9-2b6eafd22bcd.png)
@@ -278,3 +280,10 @@
 
 ### HRRN (High-Response-Ratio-Next)
 ![image](https://user-images.githubusercontent.com/56067949/234043953-283287d2-499d-42c0-bc6f-d7140c91e2d2.png)
+
+## Tech Stack & Infra
+- Java 11
+- Spring Boot 2.7.12
+- Maven
+- AWS EC2
+- Nginx
