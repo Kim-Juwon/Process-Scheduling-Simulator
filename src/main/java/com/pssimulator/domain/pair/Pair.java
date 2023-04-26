@@ -25,6 +25,10 @@ public class Pair {
         return processor.increasePowerConsumption();
     }
 
+    public boolean isProcessTerminated() {
+        return process.isTerminated();
+    }
+
     public boolean isProcessTimeQuantumExpired(IntegerTime timeQuantum) {
         return process.isTimeQuantumExpired(timeQuantum);
     }

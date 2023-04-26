@@ -36,15 +36,11 @@ public class Pairs {
     }
 
     public Processes getProcesses() {
-        if (pairs.isEmpty()) {
-            return Processes.createEmpty();
-        }
-
-        List<Process> processList = pairs.stream()
+        List<Process> processes = pairs.stream()
                 .map(Pair::getProcess)
                 .collect(Collectors.toList());
 
-        return Processes.fromProcesses(processList);
+        return Processes.fromProcesses(processes);
     }
 
     public Processors getProcessors() {
@@ -71,14 +67,10 @@ public class Pairs {
     }
 
     public Processors getTerminatedProcessors() {
-        List<Processor> terminatedProcessors = new ArrayList<>();
-
-        pairs.forEach(pair -> {
-            Process process = pair.getProcess();
-            if (process.isTerminated()) {
-                terminatedProcessors.add(pair.getProcessor());
-            }
-        });
+        List<Processor> terminatedProcessors = pairs.stream()
+                .filter(Pair::isProcessTerminated)
+                .map(Pair::getProcessor)
+                .collect(Collectors.toList());
 
         return Processors.fromProcessors(terminatedProcessors);
     }
@@ -86,9 +78,7 @@ public class Pairs {
     public void removeTerminatedPairs() {
         for (int i = 0; i < pairs.size(); i++) {
             Pair pair = pairs.get(i);
-            Process process = pair.getProcess();
-
-            if (process.isTerminated()) {
+            if (pair.isProcessTerminated()) {
                 pairs.remove(i);
                 i--;
             }
@@ -98,7 +88,6 @@ public class Pairs {
     public void removeTimeQuantumExpiredPairs(IntegerTime timeQuantum) {
         for (int i = 0; i < pairs.size(); i++) {
             Pair pair = pairs.get(i);
-
             if (pair.isProcessTimeQuantumExpired(timeQuantum)) {
                 pairs.remove(i);
                 i--;
@@ -144,6 +133,9 @@ public class Pairs {
     }
 
     public boolean isLessRemainingWorkloadProcessExistFrom(ReadyQueue readyQueue) {
+        List<Process> processesInReadyQueue = readyQueue.peekCurrentProcesses();
+
+        processesInReadyQueue.sort(Process::compareByRemainingWorkloadDescending);
         pairs.sort(Pair::compareByProcessRemainingWorkloadDescending);
 
         return pairs.stream()
@@ -155,15 +147,16 @@ public class Pairs {
     public Pairs getBiggerRemainingWorkloadPairsComparedWith(ReadyQueue readyQueue) {
         List<Process> processesInReadyQueue = readyQueue.peekCurrentProcesses();
 
+        processesInReadyQueue.sort(Process::compareByRemainingWorkloadDescending);
         pairs.sort(Pair::compareByProcessRemainingWorkloadDescending);
 
         List<Pair> biggerRemainingWorkloadPairs = new ArrayList<>();
         for (int i = 0; i < pairs.size(); i++) {
-            Pair pair = pairs.get(i);
+            Pair runningPair = pairs.get(i);
             for (int j = 0; j < processesInReadyQueue.size(); j++) {
                 Process processInReadyQueue = processesInReadyQueue.get(j);
-                if (pair.isProcessRemainingWorkloadBiggerThan(processInReadyQueue)) {
-                    biggerRemainingWorkloadPairs.add(pair);
+                if (runningPair.isProcessRemainingWorkloadBiggerThan(processInReadyQueue)) {
+                    biggerRemainingWorkloadPairs.add(runningPair);
                     pairs.remove(i);
                     processesInReadyQueue.remove(j);
                     i--;
