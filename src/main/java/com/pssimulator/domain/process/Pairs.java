@@ -22,6 +22,10 @@ public class Pairs {
         return new Pairs(new LinkedList<>());
     }
 
+    public static Pairs from(List<Pair> pairs) {
+        return new Pairs(new LinkedList<>(pairs));
+    }
+
     public boolean isEmpty() {
         return pairs.isEmpty();
     }
@@ -40,6 +44,14 @@ public class Pairs {
                 .collect(Collectors.toList());
 
         return Processes.fromProcesses(processList);
+    }
+
+    public Processors getProcessors() {
+        List<Processor> processors = pairs.stream()
+                .map(Pair::getProcessor)
+                .collect(Collectors.toList());
+
+        return Processors.fromProcessors(processors);
     }
 
     public boolean isTerminatedProcessExist() {
@@ -107,14 +119,6 @@ public class Pairs {
         return increasedPowerConsumption;
     }
 
-    public Processors getProcessors() {
-        List<Processor> processors = pairs.stream()
-                .map(Pair::getProcessor)
-                .collect(Collectors.toList());
-
-        return Processors.fromProcessors(processors);
-    }
-
     public boolean isTimeQuantumExpiredProcessExist(IntegerTime timeQuantum) {
         return pairs.stream()
                 .anyMatch(pair -> pair.isProcessTimeQuantumExpired(timeQuantum));
@@ -139,18 +143,34 @@ public class Pairs {
     }
 
     public boolean isLessRemainingWorkloadProcessExistFrom(ReadyQueue readyQueue) {
-        return readyQueue.peekCurrentProcesses().stream()
-                .anyMatch(processInReadyQueue -> pairs.stream()
-                        .anyMatch(pair -> pair.isProcessRemainingWorkloadBiggerThan(processInReadyQueue))
+        pairs.sort(Pair::compareByProcessRemainingWorkloadDescending);
+
+        return pairs.stream()
+                .anyMatch(pair -> readyQueue.peekCurrentProcesses().stream()
+                        .anyMatch(pair::isProcessRemainingWorkloadBiggerThan)
                 );
     }
 
-    public Processes getBiggerWorkloadProcessesComparedWith(ReadyQueue readyQueue) {
-        /*readyQueue.peekCurrentProcesses().forEach(processInReadyQueue -> {
-            pairs.forEach(pair -> {
-                if (pair.isProcessRemainingWorkloadBiggerThan())
-            });
-        });*/
-        return null;
+    public Pairs getBiggerRemainingWorkloadPairsComparedWith(ReadyQueue readyQueue) {
+        List<Process> processesInReadyQueue = readyQueue.peekCurrentProcesses();
+
+        pairs.sort(Pair::compareByProcessRemainingWorkloadDescending);
+
+        List<Pair> biggerRemainingWorkloadPairs = new ArrayList<>();
+        for (int i = 0; i < pairs.size(); i++) {
+            Pair pair = pairs.get(i);
+            for (int j = 0; j < processesInReadyQueue.size(); j++) {
+                Process processInReadyQueue = processesInReadyQueue.get(j);
+                if (pair.isProcessRemainingWorkloadBiggerThan(processInReadyQueue)) {
+                    biggerRemainingWorkloadPairs.add(pair);
+                    pairs.remove(i);
+                    processesInReadyQueue.remove(j);
+                    i--;
+                    break;
+                }
+            }
+        }
+
+        return Pairs.from(biggerRemainingWorkloadPairs);
     }
 }

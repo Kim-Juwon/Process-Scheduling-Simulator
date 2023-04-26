@@ -44,7 +44,7 @@ public class TimeStatusResponseDto {
 
     public void addPairs(Pairs runningPairs) {
         List<Pair> pairs = runningPairs.getPairs();
-        pairs.sort(Pair::compareTo);
+        pairs.sort(Pair::compareByProcessorName);
 
         pairs.forEach(pair -> {
             this.pairs.add(PairResponseDto.from(pair));

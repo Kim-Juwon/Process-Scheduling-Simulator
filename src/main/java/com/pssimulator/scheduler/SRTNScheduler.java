@@ -1,11 +1,11 @@
 package com.pssimulator.scheduler;
 
 import com.pssimulator.domain.process.Pair;
+import com.pssimulator.domain.process.Pairs;
 import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.Processor;
 import com.pssimulator.domain.processor.Processors;
-import com.pssimulator.domain.queue.RRReadyQueue;
 import com.pssimulator.domain.queue.SRTNReadyQueue;
 import com.pssimulator.domain.status.RunningStatus;
 import com.pssimulator.dto.request.Request;
@@ -32,6 +32,7 @@ public class SRTNScheduler extends Scheduler {
         while (isRemainingProcessExist()) {
             addArrivedProcessesToReadyQueue();
 
+            Integer preemptedProcessesSize = null;
             if (isRunningProcessExist()) {
                 if (isTerminatedRunningProcessExist()) {
                     Processes terminatedRunningProcesses = getTerminatedRunningProcesses();
@@ -44,22 +45,23 @@ public class SRTNScheduler extends Scheduler {
                     bringProcessorsBackFrom(terminatedProcessors);
                 }
                 if (isPreemptibleProcessExist()) {
-                    Processes preemptedProcesses = preempt();
+                    Pairs preemptedPairs = preempt();
+                    Processes preemptedProcesses = preemptedPairs.getProcesses();
+                    Processors preemptedProcessors = preemptedPairs.getProcessors();
 
+                    preemptedProcessesSize = preemptedProcesses.getSize();
 
-
-                    Processors processorsAboutTimeQuantumExpiredProcesses = getProcessorsAboutTimeQuantumExpiredProcesses();
-                    removeTimeQuantumExpiredPairsFromRunningStatus();
-
-                    //timeQuantumExpiredRunningProcesses.initializeRunningBurstTime();
-
-                    //addPreemptedProcessesToReadyQueueFrom(timeQuantumExpiredRunningProcesses);
-                    bringProcessorsBackFrom(processorsAboutTimeQuantumExpiredProcesses);
+                    addProcessesToReadyQueueFrom(preemptedProcesses);
+                    bringProcessorsBackFrom(preemptedProcessors);
                 }
             }
 
             if (isProcessExistInReadyQueue()) {
-                assignProcessorsToProcessesAndRegisterToRunningStatus();
+                if (preemptedProcessesSize == null) {
+                    assignProcessorsToProcessesAndRegisterToRunningStatus();
+                } else {
+                    assignProcessorsToProcessesAndRegisterToRunningStatusUpto(preemptedProcessesSize);
+                }
             }
 
             increaseWaitingTimeOfProcessesInReadyQueue();
@@ -83,9 +85,9 @@ public class SRTNScheduler extends Scheduler {
         readyQueue.addArrivedProcessesFrom(notArrivedProcesses, runningStatus.getCurrentTime());
     }
 
-    private void addPreemptedProcessesToReadyQueueFrom(Processes preemptedProcesses) {
-        RRReadyQueue rrReadyQueue = (RRReadyQueue) readyQueue;
-        rrReadyQueue.addPreemptedProcesses(preemptedProcesses);
+    private void addProcessesToReadyQueueFrom(Processes preemptedProcesses) {
+        SRTNReadyQueue srtnReadyQueue = (SRTNReadyQueue) readyQueue;
+        srtnReadyQueue.addPreemptedProcesses(preemptedProcesses);
     }
 
     private boolean isTerminatedRunningProcessExist() {
@@ -96,8 +98,8 @@ public class SRTNScheduler extends Scheduler {
         return runningStatus.isLessRemainingWorkloadProcessExistIn(readyQueue);
     }
 
-    private Processes preempt() {
-        return runningStatus.getBiggerWorkloadProcessesComparedWith(readyQueue);
+    private Pairs preempt() {
+        return runningStatus.getBiggerRemainingWorkloadPairsComparedWith(readyQueue);
     }
 
     private Processes getTerminatedRunningProcesses() {
@@ -108,17 +110,8 @@ public class SRTNScheduler extends Scheduler {
         return runningStatus.getTerminatedProcessors();
     }
 
-    private Processors getProcessorsAboutTimeQuantumExpiredProcesses() {
-        //return runningStatus.getProcessorsAboutTimeQuantumExpiredProcesses(timeQuantum);
-        return null;
-    }
-
     private void removeTerminatedPairsFromRunningStatus() {
         runningStatus.removeTerminatedPairs();
-    }
-
-    private void removeTimeQuantumExpiredPairsFromRunningStatus() {
-       // runningStatus.removeTimeQuantumExpiredPairs(timeQuantum);
     }
 
     private boolean isNotArrivedProcessesEmpty() {
@@ -154,6 +147,22 @@ public class SRTNScheduler extends Scheduler {
             Processor nextProcessor = getNextAvailableProcessor();
             Process nextProcess = getNextReadyProcess();
             changeToRunningStatus(Pair.of(nextProcess, nextProcessor));
+        }
+    }
+
+    private void assignProcessorsToProcessesAndRegisterToRunningStatusUpto(int size) {
+        int assignedCount = 1;
+
+        while (isAvailableProcessorExist() && assignedCount <= size) {
+            if (isReadyQueueEmpty()) {
+                break;
+            }
+
+            Processor nextProcessor = getNextAvailableProcessor();
+            Process nextProcess = getNextReadyProcess();
+            changeToRunningStatus(Pair.of(nextProcess, nextProcessor));
+
+            assignedCount++;
         }
     }
 

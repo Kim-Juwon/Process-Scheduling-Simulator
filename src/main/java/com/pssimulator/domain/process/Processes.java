@@ -63,4 +63,8 @@ public class Processes {
     public void initializeRunningBurstTime() {
         processes.forEach(Process::initializeRunningBurstTime);
     }
+
+    public int getSize() {
+        return processes.size();
+    }
 }

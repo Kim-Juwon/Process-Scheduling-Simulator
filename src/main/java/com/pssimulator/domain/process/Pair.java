@@ -28,7 +28,11 @@ public class Pair {
         return this.process.isRemainingWorkloadBiggerThan(process);
     }
 
-    public int compareTo(Pair pair) {
+    public int compareByProcessorName(Pair pair) {
         return processor.compareTo(pair.getProcessor());
+    }
+
+    public int compareByProcessRemainingWorkloadDescending(Pair pair) {
+        return process.compareByRemainingWorkloadDescending(pair.getProcess());
     }
 }

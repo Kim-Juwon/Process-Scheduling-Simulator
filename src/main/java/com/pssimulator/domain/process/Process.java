@@ -89,14 +89,18 @@ public class Process {
     }
 
     public int compareBySPN(Process process) {
-        return workload.compare(process.getWorkload());
+        return workload.compareByAscending(process.getWorkload());
     }
 
     public int compareBySRTN(Process process) {
-        return workload.compare(process.getWorkload());
+        return workload.compareByAscending(process.getWorkload());
     }
 
     public int compareByHRRN(Process process) {
         return responseRatio.compare(process.getResponseRatio());
+    }
+
+    public int compareByRemainingWorkloadDescending(Process process) {
+        return workload.compareByDescending(process.getWorkload());
     }
 }

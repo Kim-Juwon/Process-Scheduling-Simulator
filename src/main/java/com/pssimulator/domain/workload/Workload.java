@@ -26,7 +26,11 @@ public class Workload {
         return this.workload > workload.getWorkload();
     }
 
-    public int compare(Workload workload) {
+    public int compareByAscending(Workload workload) {
         return this.workload - workload.getWorkload();
+    }
+
+    public int compareByDescending(Workload workload) {
+        return workload.getWorkload() - this.workload;
     }
 }

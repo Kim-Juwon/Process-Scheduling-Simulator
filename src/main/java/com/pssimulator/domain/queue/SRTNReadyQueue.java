@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -51,7 +52,7 @@ public class SRTNReadyQueue extends ReadyQueue {
 
     @Override
     public List<Process> peekCurrentProcesses() {
-        List<Process> processes = new ArrayList<>();
+        List<Process> processes = new LinkedList<>();
 
         while (!readyQueue.isEmpty()) {
             processes.add(readyQueue.poll());
@@ -60,5 +61,9 @@ public class SRTNReadyQueue extends ReadyQueue {
         readyQueue.addAll(processes);
 
         return processes;
+    }
+
+    public void addPreemptedProcesses(Processes preemptedProcesses) {
+        readyQueue.addAll(preemptedProcesses.getProcesses());
     }
 }

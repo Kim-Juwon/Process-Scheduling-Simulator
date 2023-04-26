@@ -97,8 +97,8 @@ public class RunningStatus {
         return pairs.isLessRemainingWorkloadProcessExistFrom(readyQueue);
     }
 
-    public Processes getBiggerWorkloadProcessesComparedWith(ReadyQueue readyQueue) {
-        return pairs.getBiggerWorkloadProcessesComparedWith(readyQueue);
+    public Pairs getBiggerRemainingWorkloadPairsComparedWith(ReadyQueue readyQueue) {
+        return pairs.getBiggerRemainingWorkloadPairsComparedWith(readyQueue);
     }
 }
 
