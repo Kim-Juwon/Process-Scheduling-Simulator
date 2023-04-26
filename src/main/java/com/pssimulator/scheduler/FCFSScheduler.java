@@ -1,6 +1,6 @@
 package com.pssimulator.scheduler;
 
-import com.pssimulator.domain.process.Pair;
+import com.pssimulator.domain.pair.Pair;
 import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.Processor;
@@ -11,8 +11,7 @@ import com.pssimulator.dto.request.Request;
 import com.pssimulator.dto.response.Response;
 
 public class FCFSScheduler extends Scheduler {
-    private FCFSScheduler(FCFSReadyQueue fcfsReadyQueue, Processes processes,
-                          Processors processors, RunningStatus runningStatus) {
+    private FCFSScheduler(FCFSReadyQueue fcfsReadyQueue, Processes processes, Processors processors, RunningStatus runningStatus) {
         super(fcfsReadyQueue, processes, processors, runningStatus);
     }
 

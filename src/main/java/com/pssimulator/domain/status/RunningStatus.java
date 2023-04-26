@@ -1,8 +1,7 @@
 package com.pssimulator.domain.status;
 
-import com.pssimulator.domain.process.Pair;
+import com.pssimulator.domain.pair.Pair;
 import com.pssimulator.domain.process.Pairs;
-import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.PowerConsumption;
 import com.pssimulator.domain.processor.Processors;
@@ -10,8 +9,6 @@ import com.pssimulator.domain.queue.ReadyQueue;
 import com.pssimulator.domain.time.IntegerTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
 
 @Getter
 @RequiredArgsConstructor

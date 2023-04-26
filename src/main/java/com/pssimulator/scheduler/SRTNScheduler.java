@@ -1,6 +1,6 @@
 package com.pssimulator.scheduler;
 
-import com.pssimulator.domain.process.Pair;
+import com.pssimulator.domain.pair.Pair;
 import com.pssimulator.domain.process.Pairs;
 import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;

@@ -1,6 +1,6 @@
 package com.pssimulator.dto.response;
 
-import com.pssimulator.domain.process.Pair;
+import com.pssimulator.domain.pair.Pair;
 import com.pssimulator.domain.processor.Processor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
