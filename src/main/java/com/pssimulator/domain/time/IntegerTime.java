@@ -1,39 +1,31 @@
 package com.pssimulator.domain.time;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class IntegerTime {
     private static final Integer ZERO = 0;
+    private static final Integer EMPTY = null;
 
-    @Getter
     private Integer second;
-
-    private IntegerTime(Integer second) {
-        this.second = second;
-    }
 
     public static IntegerTime createZero() {
         return new IntegerTime(ZERO);
     }
 
     public static IntegerTime createEmpty() {
-        return new IntegerTime(null);
+        return new IntegerTime(EMPTY);
     }
 
     public static IntegerTime from(Integer second) {
         return new IntegerTime(second);
     }
 
-    public boolean isZero() {
-        return second.equals(ZERO);
-    }
-
     public void increase() {
         ++second;
-    }
-
-    public void decrease() {
-        --second;
     }
 
     public void changeTo(IntegerTime time) {
@@ -50,6 +42,10 @@ public class IntegerTime {
 
     public DoubleTime divide(IntegerTime time) {
         return DoubleTime.from((double) second / time.getSecond());
+    }
+
+    public boolean isSameOrHigher(IntegerTime time) {
+        return second >= time.getSecond();
     }
 
     public boolean equals(Object obj) {

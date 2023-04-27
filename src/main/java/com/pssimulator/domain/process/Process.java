@@ -14,25 +14,25 @@ public class Process {
     private final String name; // 이름
     private final IntegerTime arrivalTime; // 도착 시간
     private final IntegerTime burstTime; // 총 수행 시간
-    private final Workload workload; // 남은 작업량
+    private final Workload remainingWorkload; // 남은 작업량
     private final IntegerTime waitingTime; // 총 대기 시간
     private final IntegerTime turnaroundTime; // waitingTime + burstTime
     private final DoubleTime normalizedTurnaroundTime; // turnaroundTime / burstTime
     private final ResponseRatio responseRatio; // (waitingTime + workload) / workload
-    private final Workload initialWorkload; // 최초 workload
-    private final IntegerTime runningBurstTime; // preemption 되기 전까지 수행된 시간
+    private final Workload totalWorkload; // 총 해야할 작업량
+    private final IntegerTime runningBurstTime; // preemption 되기 전까지 수행된 시간 (Round-Robin 에서 time quantum 만료 여부 사용에 판단)
 
     public static Process from(ProcessRequestDto dto) {
         return Process.builder()
                 .name(dto.getName())
                 .arrivalTime(IntegerTime.from(dto.getArrivalTime()))
                 .burstTime(IntegerTime.createZero())
-                .workload(Workload.from(dto.getWorkload()))
+                .remainingWorkload(Workload.from(dto.getWorkload()))
                 .waitingTime(IntegerTime.createZero())
                 .turnaroundTime(IntegerTime.createEmpty())
                 .normalizedTurnaroundTime(DoubleTime.createEmpty())
                 .responseRatio(ResponseRatio.createEmpty())
-                .initialWorkload(Workload.from(dto.getWorkload()))
+                .totalWorkload(Workload.from(dto.getWorkload()))
                 .runningBurstTime(IntegerTime.createZero())
                 .build();
     }
@@ -42,7 +42,7 @@ public class Process {
     }
 
     public boolean isTerminated() {
-        return workload.isZero();
+        return remainingWorkload.isZero();
     }
 
     public void increaseWaitingTime() {
@@ -50,11 +50,11 @@ public class Process {
     }
 
     public boolean isTimeQuantumExpired(IntegerTime timeQuantum) {
-        return runningBurstTime.equals(timeQuantum);
+        return runningBurstTime.isSameOrHigher(timeQuantum);
     }
 
     public boolean isRemainingWorkloadBiggerThan(Process process) {
-        return workload.isBiggerThan(process.getWorkload());
+        return remainingWorkload.isBiggerThan(process.getRemainingWorkload());
     }
 
     public void initializeRunningBurstTime() {
@@ -62,13 +62,29 @@ public class Process {
     }
 
     public void updateWorkloadAndBurstTimeFrom(Processor processor) {
-        workload.decreaseBy(processor.getThroughputPerSecond());
+        decreaseRemainingWorkloadFrom(processor);
+        increaseBurstTime();
+    }
+
+    private void decreaseRemainingWorkloadFrom(Processor processor) {
+        remainingWorkload.decreaseBy(processor.getThroughputPerSecond());
+    }
+
+    private void increaseBurstTime() {
+        increaseTotalBurstTime();
+        increaseRunningBurstTime();
+    }
+
+    private void increaseTotalBurstTime() {
         burstTime.increase();
+    }
+
+    private void increaseRunningBurstTime() {
         runningBurstTime.increase();
     }
 
     public void calculateResponseRatio() {
-        responseRatio.changeFrom(waitingTime, initialWorkload);
+        responseRatio.changeFrom(waitingTime, totalWorkload);
     }
 
     public void calculateResult() {
@@ -78,29 +94,27 @@ public class Process {
 
     private void calculateTurnaroundTime() {
         // TT = WT + BT
-        IntegerTime calculatedTime = waitingTime.add(burstTime);
-        turnaroundTime.changeTo(calculatedTime);
+        turnaroundTime.changeTo(waitingTime.add(burstTime));
     }
 
     private void calculateNormalizedTurnaroundTime() {
         // NTT = TT / BT
-        DoubleTime calculatedTime = turnaroundTime.divide(burstTime);
-        normalizedTurnaroundTime.changeTo(calculatedTime);
+        normalizedTurnaroundTime.changeTo(turnaroundTime.divide(burstTime));
     }
 
     public int compareBySPN(Process process) {
-        return workload.compareByAscending(process.getWorkload());
+        return remainingWorkload.compareByAscending(process.getRemainingWorkload());
     }
 
     public int compareBySRTN(Process process) {
-        return workload.compareByAscending(process.getWorkload());
+        return remainingWorkload.compareByAscending(process.getRemainingWorkload());
     }
 
     public int compareByHRRN(Process process) {
-        return responseRatio.compare(process.getResponseRatio());
+        return responseRatio.compareByDescending(process.getResponseRatio());
     }
 
     public int compareByRemainingWorkloadDescending(Process process) {
-        return workload.compareByDescending(process.getWorkload());
+        return remainingWorkload.compareByDescending(process.getRemainingWorkload());
     }
 }

@@ -20,7 +20,7 @@ public class ResponseRatio {
         this.responseRatio = (double) (waitingTime.getSecond() + workload.getWorkload()) / workload.getWorkload();
     }
 
-    public int compare(ResponseRatio responseRatio) {
+    public int compareByDescending(ResponseRatio responseRatio) {
         if (this.responseRatio > responseRatio.getResponseRatio()) {
             return -1;
         } else if (this.responseRatio.equals(responseRatio.getResponseRatio())) {

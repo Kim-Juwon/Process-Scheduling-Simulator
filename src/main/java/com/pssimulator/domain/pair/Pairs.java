@@ -1,6 +1,7 @@
-package com.pssimulator.domain.process;
+package com.pssimulator.domain.pair;
 
-import com.pssimulator.domain.pair.Pair;
+import com.pssimulator.domain.process.Process;
+import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.PowerConsumption;
 import com.pssimulator.domain.processor.Processor;
 import com.pssimulator.domain.processor.Processors;
