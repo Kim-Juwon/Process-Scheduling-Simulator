@@ -1,6 +1,7 @@
 package com.pssimulator.domain.processor;
 
 import com.pssimulator.dto.request.ProcessorRequestDto;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Processors {
     private static final int FRONT = 0;
 
@@ -32,8 +33,7 @@ public class Processors {
             return new Processors(new LinkedList<>());
         }
 
-        List<Processor> processors = new LinkedList<>(processorList);
-        return new Processors(processors);
+        return new Processors(new LinkedList<>(processorList));
     }
 
     public boolean isEmpty() {
@@ -53,9 +53,17 @@ public class Processors {
             return null;
         }
 
-        Processor nextProcessor = processors.get(FRONT);
-        processors.remove(FRONT);
+        Processor nextProcessor = getFrontProcessor();
+        removeFrontProcessor();
 
         return nextProcessor;
+    }
+
+    private Processor getFrontProcessor() {
+        return processors.get(FRONT);
+    }
+
+    private void removeFrontProcessor() {
+        processors.remove(FRONT);
     }
 }
