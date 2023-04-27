@@ -2,18 +2,19 @@ package com.pssimulator.domain.ratio;
 
 import com.pssimulator.domain.time.IntegerTime;
 import com.pssimulator.domain.workload.Workload;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ResponseRatio {
+    private static final Double EMPTY = null;
+
     private Double responseRatio;
 
-    private ResponseRatio(Double responseRatio) {
-        this.responseRatio = responseRatio;
-    }
-
     public static ResponseRatio createEmpty() {
-        return new ResponseRatio(null);
+        return new ResponseRatio(EMPTY);
     }
 
     public void changeFrom(IntegerTime waitingTime, Workload workload) {
