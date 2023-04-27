@@ -1,16 +1,15 @@
 package com.pssimulator.domain.processor;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class PowerConsumption {
     private static final Double ZERO = 0.0;
 
     private Double powerConsumption;
-
-    private PowerConsumption(Double powerConsumption) {
-        this.powerConsumption = powerConsumption;
-    }
 
     public static PowerConsumption createZero() {
         return new PowerConsumption(ZERO);
