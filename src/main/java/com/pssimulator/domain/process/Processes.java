@@ -2,7 +2,9 @@ package com.pssimulator.domain.process;
 
 import com.pssimulator.domain.time.IntegerTime;
 import com.pssimulator.dto.request.ProcessRequestDto;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -10,12 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Processes {
     private final List<Process> processes;
-
-    private Processes(List<Process> processes) {
-        this.processes = processes;
-    }
 
     public static Processes from(List<ProcessRequestDto> dtos) {
         List<Process> processes = dtos.stream()
@@ -41,6 +40,10 @@ public class Processes {
         return processes.isEmpty();
     }
 
+    public int getSize() {
+        return processes.size();
+    }
+
     public List<Process> getArrivedProcessesAt(IntegerTime time) {
         List<Process> arrivedProcesses = new ArrayList<>();
 
@@ -62,9 +65,5 @@ public class Processes {
 
     public void initializeRunningBurstTime() {
         processes.forEach(Process::initializeRunningBurstTime);
-    }
-
-    public int getSize() {
-        return processes.size();
     }
 }

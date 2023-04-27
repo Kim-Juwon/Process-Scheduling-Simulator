@@ -40,6 +40,7 @@ public class SRTNScheduler extends Scheduler {
                     removeTerminatedPairsFromRunningStatus();
 
                     terminatedRunningProcesses.calculateResult();
+                    terminatedRunningProcesses.initializeRunningBurstTime();
 
                     response.addTerminatedProcessesFrom(terminatedRunningProcesses);
                     bringProcessorsBackFrom(terminatedProcessors);
@@ -48,6 +49,8 @@ public class SRTNScheduler extends Scheduler {
                     Pairs preemptedPairs = preempt();
                     Processes preemptedProcesses = preemptedPairs.getProcesses();
                     Processors preemptedProcessors = preemptedPairs.getProcessors();
+
+                    preemptedProcesses.initializeRunningBurstTime();
 
                     preemptedProcessesSize = preemptedProcesses.getSize();
 

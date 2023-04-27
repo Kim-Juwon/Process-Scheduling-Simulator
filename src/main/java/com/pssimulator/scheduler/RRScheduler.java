@@ -43,6 +43,7 @@ public class RRScheduler extends Scheduler {
                     removeTerminatedPairsFromRunningStatus();
 
                     terminatedRunningProcesses.calculateResult();
+                    terminatedRunningProcesses.initializeRunningBurstTime();
 
                     response.addTerminatedProcessesFrom(terminatedRunningProcesses);
                     bringProcessorsBackFrom(terminatedProcessors);
