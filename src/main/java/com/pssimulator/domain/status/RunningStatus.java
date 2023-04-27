@@ -7,11 +7,12 @@ import com.pssimulator.domain.processor.PowerConsumption;
 import com.pssimulator.domain.processor.Processors;
 import com.pssimulator.domain.queue.ReadyQueue;
 import com.pssimulator.domain.time.IntegerTime;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class RunningStatus {
     private final IntegerTime currentTime;
     private final Pairs pairs;
@@ -19,10 +20,6 @@ public class RunningStatus {
 
     public static RunningStatus create() {
         return new RunningStatus(IntegerTime.createZero(), Pairs.createEmpty(), PowerConsumption.createZero());
-    }
-
-    public IntegerTime getCurrentTime() {
-        return currentTime;
     }
 
     public boolean isTerminatedProcessExist() {
@@ -98,4 +95,3 @@ public class RunningStatus {
         return pairs.getBiggerRemainingWorkloadPairsComparedWith(readyQueue);
     }
 }
-
