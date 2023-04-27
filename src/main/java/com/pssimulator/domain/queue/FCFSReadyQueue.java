@@ -3,6 +3,7 @@ package com.pssimulator.domain.queue;
 import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.time.IntegerTime;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class FCFSReadyQueue extends ReadyQueue {
     private final Queue<Process> readyQueue;
 
