@@ -3,17 +3,16 @@ package com.pssimulator.domain.queue;
 import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.time.IntegerTime;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class SPNReadyQueue extends ReadyQueue {
-    private final Queue<Process> readyQueue;
+    private SPNReadyQueue(Queue<Process> readyQueue) {
+        super(readyQueue);
+    }
 
     public static SPNReadyQueue createEmpty() {
         return new SPNReadyQueue(new PriorityQueue<>(Process::compareBySPN));

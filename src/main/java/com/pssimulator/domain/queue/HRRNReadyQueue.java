@@ -3,17 +3,16 @@ package com.pssimulator.domain.queue;
 import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.time.IntegerTime;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class HRRNReadyQueue extends ReadyQueue {
-    private final Queue<Process> readyQueue;
+    private HRRNReadyQueue(Queue<Process> readyQueue) {
+        super(readyQueue);
+    }
 
     public static HRRNReadyQueue createEmpty() {
         return new HRRNReadyQueue(new PriorityQueue<>(Process::compareByHRRN));

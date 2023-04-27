@@ -3,8 +3,6 @@ package com.pssimulator.domain.queue;
 import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.time.IntegerTime;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -12,9 +10,10 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class SRTNReadyQueue extends ReadyQueue {
-    private final Queue<Process> readyQueue;
+    private SRTNReadyQueue(Queue<Process> readyQueue) {
+        super(readyQueue);
+    }
 
     public static SRTNReadyQueue createEmpty() {
         return new SRTNReadyQueue(new PriorityQueue<>(Process::compareBySRTN));
