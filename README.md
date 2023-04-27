@@ -4,7 +4,7 @@
 ## developer
 - KimJuwon
 
-## 대상 알고리즘
+## Algorithm
 - [FCFS (First-Come-First-Service)](https://ko.wikipedia.org/wiki/%EC%84%A0%EC%9E%85_%EC%84%A0%EC%B2%98%EB%A6%AC_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
 - [RR (Round-Robin)](https://ko.wikipedia.org/wiki/%EB%9D%BC%EC%9A%B4%EB%93%9C_%EB%A1%9C%EB%B9%88_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
 - [SPN (Shortest-Process-Next)](https://ko.wikipedia.org/wiki/%EC%B5%9C%EB%8B%A8_%EC%9E%91%EC%97%85_%EC%9A%B0%EC%84%A0_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
@@ -280,6 +280,39 @@
 
 ### HRRN (High-Response-Ratio-Next)
 ![image](https://user-images.githubusercontent.com/56067949/234043953-283287d2-499d-42c0-bc6f-d7140c91e2d2.png)
+
+## Class Diagram
+![image](https://user-images.githubusercontent.com/56067949/234841651-68568cdb-a85f-4b35-b340-9d0bbae9627e.png)
+
+### Scheduler Class
+- properties
+  - `readyQueue`
+    - ready state process들의 ready queue
+  - `runningStatus`
+    - running state에 있는 process 및 그에 할당된 processor 정보
+  - `notArrivedProcesses`
+    - 아직 도착하지 않은(현재 시간이 arrivalTime보다 과거인 경우) process들
+  - `availableProcessors`
+    - 현재 running state에 있는 프로세스들에 할당되어 있지 않은 processor들
+- methods
+  - `schedule()`
+    - 요청된 정보로 스케줄링을 진행하고 결과를 리턴
+
+### ReadyQueue Class
+- properties
+  - `readyQueue`
+    - List of ready state process
+- methods
+  - `isEmpty()`
+    - ready queue가 비어있는지 확인
+  - `addArrivedProcessFrom()`
+    - 현재 시간이 도착한 process들을 ready queue에 삽입
+  - `getNextProcess()`
+    - ready queue에서 pop한 process
+  - `increaseWaitingTimeOfProcesses()`
+    - ready queue에 있는 process들의 waiting time을 1씩 증가시킴
+  - `peekCurrentProcesses()`
+    - 현재 ready queue에 있는 process들을 priorty가 높은 순서대로 보여주는 process list 리턴
 
 ## Tech Stack & Infra
 - Java 11
