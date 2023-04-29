@@ -25,8 +25,7 @@ public class FCFSReadyQueue extends ReadyQueue {
 
     @Override
     public void addArrivedProcessesFrom(Processes processes, IntegerTime time) {
-        List<Process> arrivedProcesses = processes.getArrivedProcessesAt(time);
-        readyQueue.addAll(arrivedProcesses);
+        readyQueue.addAll(processes.getArrivedProcessesAt(time));
     }
 
     @Override

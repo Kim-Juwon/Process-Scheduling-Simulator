@@ -34,6 +34,10 @@ public class RunningStatus {
         pairs.add(pair);
     }
 
+    public Pairs getTerminatedPairs() {
+        return pairs.getTerminatedPairs();
+    }
+
     public Processes getTerminatedProcesses() {
         return pairs.getTerminatedProcesses();
     }

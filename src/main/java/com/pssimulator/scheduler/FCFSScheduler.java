@@ -1,6 +1,7 @@
 package com.pssimulator.scheduler;
 
 import com.pssimulator.domain.pair.Pair;
+import com.pssimulator.domain.pair.Pairs;
 import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.Processor;
@@ -32,15 +33,16 @@ public class FCFSScheduler extends Scheduler {
             addArrivedProcessesToReadyQueue();
 
             if (isTerminatedRunningProcessExist()) {
-                Processes terminatedRunningProcesses = getTerminatedRunningProcesses();
-                Processors terminatedProcessors = getTerminatedRunningProcessors();
-                removeTerminatedPairsFromRunningStatus();
+                Pairs pairs = getTerminatedPairs();
+                Processes terminatedProcesses = pairs.getTerminatedProcesses();
+                Processors terminatedProcessors = pairs.getTerminatedProcessors();
 
-                terminatedRunningProcesses.calculateResult();
-                terminatedRunningProcesses.initializeRunningBurstTime();
+                calculateResultOfTerminatedProcessesFrom(terminatedProcesses);
+                initializeRunningBurstTimeOfProcessesFrom(terminatedProcesses);
 
-                response.addTerminatedProcessesFrom(terminatedRunningProcesses);
                 bringProcessorsBackFrom(terminatedProcessors);
+
+                response.addTerminatedProcessesFrom(terminatedProcesses);
             }
 
             if (isProcessExistInReadyQueue()) {
@@ -64,26 +66,6 @@ public class FCFSScheduler extends Scheduler {
         return !isNotArrivedProcessesEmpty() || !isReadyQueueEmpty() || !isRunningProcessEmpty();
     }
 
-    private void addArrivedProcessesToReadyQueue() {
-        readyQueue.addArrivedProcessesFrom(notArrivedProcesses, runningStatus.getCurrentTime());
-    }
-
-    private boolean isTerminatedRunningProcessExist() {
-        return runningStatus.isTerminatedProcessExist();
-    }
-
-    private Processes getTerminatedRunningProcesses() {
-        return runningStatus.getTerminatedProcesses();
-    }
-
-    private Processors getTerminatedRunningProcessors() {
-        return runningStatus.getTerminatedProcessors();
-    }
-
-    private void removeTerminatedPairsFromRunningStatus() {
-        runningStatus.removeTerminatedPairs();
-    }
-
     private boolean isNotArrivedProcessesEmpty() {
         return notArrivedProcesses.isEmpty();
     }
@@ -94,6 +76,26 @@ public class FCFSScheduler extends Scheduler {
 
     private boolean isRunningProcessEmpty() {
         return runningStatus.isProcessesEmpty();
+    }
+
+    private void addArrivedProcessesToReadyQueue() {
+        readyQueue.addArrivedProcessesFrom(notArrivedProcesses, runningStatus.getCurrentTime());
+    }
+
+    private boolean isTerminatedRunningProcessExist() {
+        return runningStatus.isTerminatedProcessExist();
+    }
+
+    private Pairs getTerminatedPairs() {
+        return runningStatus.getTerminatedPairs();
+    }
+
+    private void calculateResultOfTerminatedProcessesFrom(Processes terminatedProcesses) {
+        terminatedProcesses.calculateResult();
+    }
+
+    private void initializeRunningBurstTimeOfProcessesFrom(Processes processes) {
+        processes.initializeRunningBurstTime();
     }
 
     private void bringProcessorsBackFrom(Processors processors) {

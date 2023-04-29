@@ -58,6 +58,21 @@ public class Pairs {
                 .anyMatch(Process::isTerminated);
     }
 
+    public Pairs getTerminatedPairs() {
+        List<Pair> terminatedPairs = new ArrayList<>();
+
+        for (int i = 0; i < pairs.size(); i++) {
+            Pair pair = pairs.get(i);
+            if (pair.isProcessTerminated()) {
+                terminatedPairs.add(pair);
+                pairs.remove(i);
+                i--;
+            }
+        }
+
+        return Pairs.from(terminatedPairs);
+    }
+
     public Processes getTerminatedProcesses() {
         List<Process> terminatedProcesses = pairs.stream()
                 .map(Pair::getProcess)
