@@ -1,6 +1,7 @@
 package com.pssimulator.scheduler;
 
 import com.pssimulator.domain.pair.Pair;
+import com.pssimulator.domain.pair.Pairs;
 import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.Processor;
@@ -32,15 +33,16 @@ public class SPNScheduler extends Scheduler {
             addArrivedProcessesToReadyQueue();
 
             if (isTerminatedRunningProcessExist()) {
-                Processes terminatedRunningProcesses = getTerminatedRunningProcesses();
-                Processors terminatedProcessors = getTerminatedRunningProcessors();
-                removeTerminatedPairsFromRunningStatus();
+                Pairs pairs = getTerminatedPairs();
+                Processes terminatedProcesses = pairs.getTerminatedProcesses();
+                Processors terminatedProcessors = pairs.getTerminatedProcessors();
 
-                terminatedRunningProcesses.calculateResult();
-                terminatedRunningProcesses.initializeRunningBurstTime();
+                calculateResultOfTerminatedProcessesFrom(terminatedProcesses);
+                initializeRunningBurstTimeOfProcessesFrom(terminatedProcesses);
 
-                response.addTerminatedProcessesFrom(terminatedRunningProcesses);
                 bringProcessorsBackFrom(terminatedProcessors);
+
+                response.addTerminatedProcessesFrom(terminatedProcesses);
             }
 
             if (isProcessExistInReadyQueue()) {
@@ -60,6 +62,10 @@ public class SPNScheduler extends Scheduler {
         return response;
     }
 
+    private Pairs getTerminatedPairs() {
+        return runningStatus.getTerminatedPairs();
+    }
+
     private boolean isRemainingProcessExist() {
         return !isNotArrivedProcessesEmpty() || !isReadyQueueEmpty() || !isRunningProcessEmpty();
     }
@@ -72,16 +78,12 @@ public class SPNScheduler extends Scheduler {
         return runningStatus.isTerminatedProcessExist();
     }
 
-    private Processes getTerminatedRunningProcesses() {
-        return runningStatus.getTerminatedProcesses();
+    private void calculateResultOfTerminatedProcessesFrom(Processes terminatedProcesses) {
+        terminatedProcesses.calculateResult();
     }
 
-    private Processors getTerminatedRunningProcessors() {
-        return runningStatus.getTerminatedProcessors();
-    }
-
-    private void removeTerminatedPairsFromRunningStatus() {
-        runningStatus.removeTerminatedPairs();
+    private void initializeRunningBurstTimeOfProcessesFrom(Processes processes) {
+        processes.initializeRunningBurstTime();
     }
 
     private boolean isNotArrivedProcessesEmpty() {
