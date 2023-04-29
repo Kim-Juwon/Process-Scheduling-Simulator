@@ -25,10 +25,10 @@ public class HRRNReadyQueue extends ReadyQueue {
 
     @Override
     public void addArrivedProcessesFrom(Processes processes, IntegerTime currentTime) {
-        updateThroughResponseRatio();
+        updateBasedOnResponseRatio();
 
         List<Process> arrivedProcesses = processes.getArrivedProcessesAt(currentTime);
-        arrivedProcesses.forEach(Process::calculateResponseRatio);
+        calculateResponseRatioFrom(arrivedProcesses);
         readyQueue.addAll(arrivedProcesses);
     }
 
@@ -63,7 +63,7 @@ public class HRRNReadyQueue extends ReadyQueue {
         return processes;
     }
 
-    private void updateThroughResponseRatio() {
+    private void updateBasedOnResponseRatio() {
         List<Process> processes = new ArrayList<>();
 
         while (!readyQueue.isEmpty()) {
@@ -72,5 +72,9 @@ public class HRRNReadyQueue extends ReadyQueue {
 
         processes.forEach(Process::calculateResponseRatio);
         readyQueue.addAll(processes);
+    }
+
+    private void calculateResponseRatioFrom(List<Process> arrivedProcesses) {
+        arrivedProcesses.forEach(Process::calculateResponseRatio);
     }
 }
