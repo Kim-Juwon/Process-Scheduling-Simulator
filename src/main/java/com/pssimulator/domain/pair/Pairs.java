@@ -101,16 +101,6 @@ public class Pairs {
         }
     }
 
-    public void removeTimeQuantumExpiredPairs(IntegerTime timeQuantum) {
-        for (int i = 0; i < pairs.size(); i++) {
-            Pair pair = pairs.get(i);
-            if (pair.isProcessTimeQuantumExpired(timeQuantum)) {
-                pairs.remove(i);
-                i--;
-            }
-        }
-    }
-
     public void updateWorkloadAndBurstTimeOfProcesses() {
         pairs.forEach(Pair::updateWorkloadAndBurstTimeOfProcess);
     }
@@ -130,22 +120,19 @@ public class Pairs {
                 .anyMatch(pair -> pair.isProcessTimeQuantumExpired(timeQuantum));
     }
 
-    public Processes getTimeQuantumExpiredProcesses(IntegerTime timeQuantum) {
-        List<Process> timeQuantumExpiredProcesses = pairs.stream()
-                .filter(pair -> pair.isProcessTimeQuantumExpired(timeQuantum))
-                .map(Pair::getProcess)
-                .collect(Collectors.toList());
+    public Pairs getTimeQuantumExpiredPairs(IntegerTime timeQuantum) {
+        List<Pair> timeQuantumExpiredPairs = new ArrayList<>();
 
-        return Processes.fromProcesses(timeQuantumExpiredProcesses);
-    }
+        for (int i = 0; i < pairs.size(); i++) {
+            Pair pair = pairs.get(i);
+            if (pair.isProcessTimeQuantumExpired(timeQuantum)) {
+                timeQuantumExpiredPairs.add(pair);
+                pairs.remove(i);
+                i--;
+            }
+        }
 
-    public Processors getProcessorsAboutTimeQuantumExpiredProcesses(IntegerTime timeQuantum) {
-        List<Processor> processors = pairs.stream()
-                .filter(pair -> pair.isProcessTimeQuantumExpired(timeQuantum))
-                .map(Pair::getProcessor)
-                .collect(Collectors.toList());
-
-        return Processors.fromProcessors(processors);
+        return Pairs.from(timeQuantumExpiredPairs);
     }
 
     public boolean isLessRemainingWorkloadProcessExistFrom(ReadyQueue readyQueue) {

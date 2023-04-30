@@ -54,10 +54,6 @@ public class RunningStatus {
         pairs.removeTerminatedPairs();
     }
 
-    public void removeTimeQuantumExpiredPairs(IntegerTime timeQuantum) {
-        pairs.removeTimeQuantumExpiredPairs(timeQuantum);
-    }
-
     public void updateWorkloadAndBurstTimeOfProcesses() {
         pairs.updateWorkloadAndBurstTimeOfProcesses();
     }
@@ -83,12 +79,8 @@ public class RunningStatus {
         return pairs.isTimeQuantumExpiredProcessExist(timeQuantum);
     }
 
-    public Processes getTimeQuantumExpiredProcesses(IntegerTime timeQuantum) {
-        return pairs.getTimeQuantumExpiredProcesses(timeQuantum);
-    }
-
-    public Processors getProcessorsAboutTimeQuantumExpiredProcesses(IntegerTime timeQuantum) {
-        return pairs.getProcessorsAboutTimeQuantumExpiredProcesses(timeQuantum);
+    public Pairs getTimeQuantumExpiredPairs(IntegerTime timeQuantum) {
+        return pairs.getTimeQuantumExpiredPairs(timeQuantum);
     }
 
     public boolean isLessRemainingWorkloadProcessExistIn(ReadyQueue readyQueue) {

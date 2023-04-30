@@ -1,6 +1,7 @@
 package com.pssimulator.scheduler;
 
 import com.pssimulator.domain.pair.Pair;
+import com.pssimulator.domain.pair.Pairs;
 import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.Processor;
@@ -38,25 +39,26 @@ public class RRScheduler extends Scheduler {
 
             if (isRunningProcessExist()) {
                 if (isTerminatedRunningProcessExist()) {
-                    Processes terminatedRunningProcesses = getTerminatedRunningProcesses();
-                    Processors terminatedProcessors = getTerminatedRunningProcessors();
-                    removeTerminatedPairsFromRunningStatus();
+                    Pairs pairs = getTerminatedPairs();
+                    Processes terminatedProcesses = pairs.getTerminatedProcesses();
+                    Processors terminatedProcessors = pairs.getTerminatedProcessors();
 
-                    terminatedRunningProcesses.calculateResult();
-                    terminatedRunningProcesses.initializeRunningBurstTime();
+                    calculateResultOfTerminatedProcessesFrom(terminatedProcesses);
+                    initializeRunningBurstTimeOfProcessesFrom(terminatedProcesses);
 
-                    response.addTerminatedProcessesFrom(terminatedRunningProcesses);
                     bringProcessorsBackFrom(terminatedProcessors);
+
+                    response.addTerminatedProcessesFrom(terminatedProcesses);
                 }
-                if (isTimeQuantumExpiredRunningProcessExist()) {
-                    Processes timeQuantumExpiredRunningProcesses = getTimeQuantumExpiredRunningProcesses();
-                    Processors processorsAboutTimeQuantumExpiredProcesses = getProcessorsAboutTimeQuantumExpiredProcesses();
-                    removeTimeQuantumExpiredPairsFromRunningStatus();
+                if (isPreemptibleProcessExist()) {
+                    Pairs preemptedPairs = preempt();
+                    Processes preemptedProcesses = preemptedPairs.getProcesses();
+                    Processors preemptedProcessors = preemptedPairs.getProcessors();
 
-                    timeQuantumExpiredRunningProcesses.initializeRunningBurstTime();
+                    initializeRunningBurstTimeOfProcessesFrom(preemptedProcesses);
 
-                    addPreemptedProcessesToReadyQueueFrom(timeQuantumExpiredRunningProcesses);
-                    bringProcessorsBackFrom(processorsAboutTimeQuantumExpiredProcesses);
+                    addProcessesToReadyQueueFrom(preemptedProcesses);
+                    bringProcessorsBackFrom(preemptedProcessors);
                 }
             }
 
@@ -85,41 +87,33 @@ public class RRScheduler extends Scheduler {
         readyQueue.addArrivedProcessesFrom(notArrivedProcesses, runningStatus.getCurrentTime());
     }
 
-    private void addPreemptedProcessesToReadyQueueFrom(Processes preemptedProcesses) {
+    private void addProcessesToReadyQueueFrom(Processes processes) {
         RRReadyQueue rrReadyQueue = (RRReadyQueue) readyQueue;
-        rrReadyQueue.addPreemptedProcesses(preemptedProcesses);
+        rrReadyQueue.addPreemptedProcesses(processes);
     }
 
     private boolean isTerminatedRunningProcessExist() {
         return runningStatus.isTerminatedProcessExist();
     }
 
-    private boolean isTimeQuantumExpiredRunningProcessExist() {
+    private Pairs getTerminatedPairs() {
+        return runningStatus.getTerminatedPairs();
+    }
+
+    private boolean isPreemptibleProcessExist() {
         return runningStatus.isTimeQuantumExpiredProcessExist(timeQuantum);
     }
 
-    private Processes getTerminatedRunningProcesses() {
-        return runningStatus.getTerminatedProcesses();
+    private Pairs preempt() {
+        return runningStatus.getTimeQuantumExpiredPairs(timeQuantum);
     }
 
-    private Processors getTerminatedRunningProcessors() {
-        return runningStatus.getTerminatedProcessors();
+    private void calculateResultOfTerminatedProcessesFrom(Processes terminatedProcesses) {
+        terminatedProcesses.calculateResult();
     }
 
-    private Processes getTimeQuantumExpiredRunningProcesses() {
-        return runningStatus.getTimeQuantumExpiredProcesses(timeQuantum);
-    }
-
-    private Processors getProcessorsAboutTimeQuantumExpiredProcesses() {
-        return runningStatus.getProcessorsAboutTimeQuantumExpiredProcesses(timeQuantum);
-    }
-
-    private void removeTerminatedPairsFromRunningStatus() {
-        runningStatus.removeTerminatedPairs();
-    }
-
-    private void removeTimeQuantumExpiredPairsFromRunningStatus() {
-        runningStatus.removeTimeQuantumExpiredPairs(timeQuantum);
+    private void initializeRunningBurstTimeOfProcessesFrom(Processes terminatedProcesses) {
+        terminatedProcesses.initializeRunningBurstTime();
     }
 
     private boolean isNotArrivedProcessesEmpty() {
