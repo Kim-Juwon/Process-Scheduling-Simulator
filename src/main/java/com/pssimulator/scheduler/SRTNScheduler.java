@@ -33,17 +33,19 @@ public class SRTNScheduler extends Scheduler {
             addArrivedProcessesToReadyQueue();
 
             Integer preemptedProcessesSize = null;
+            
             if (isRunningProcessExist()) {
                 if (isTerminatedRunningProcessExist()) {
-                    Processes terminatedRunningProcesses = getTerminatedRunningProcesses();
-                    Processors terminatedProcessors = getTerminatedRunningProcessors();
-                    removeTerminatedPairsFromRunningStatus();
+                    Pairs pairs = getTerminatedPairs();
+                    Processes terminatedProcesses = pairs.getTerminatedProcesses();
+                    Processors terminatedProcessors = pairs.getTerminatedProcessors();
 
-                    terminatedRunningProcesses.calculateResult();
-                    terminatedRunningProcesses.initializeRunningBurstTime();
+                    calculateResultOfTerminatedProcessesFrom(terminatedProcesses);
+                    initializeRunningBurstTimeOfProcessesFrom(terminatedProcesses);
 
-                    response.addTerminatedProcessesFrom(terminatedRunningProcesses);
                     bringProcessorsBackFrom(terminatedProcessors);
+
+                    response.addTerminatedProcessesFrom(terminatedProcesses);
                 }
                 if (isPreemptibleProcessExist()) {
                     Pairs preemptedPairs = preempt();
@@ -97,24 +99,24 @@ public class SRTNScheduler extends Scheduler {
         return runningStatus.isTerminatedProcessExist();
     }
 
+    private Pairs getTerminatedPairs() {
+        return runningStatus.getTerminatedPairs();
+    }
+
+    private void calculateResultOfTerminatedProcessesFrom(Processes terminatedProcesses) {
+        terminatedProcesses.calculateResult();
+    }
+
+    private void initializeRunningBurstTimeOfProcessesFrom(Processes terminatedProcesses) {
+        terminatedProcesses.initializeRunningBurstTime();
+    }
+
     private boolean isPreemptibleProcessExist() {
         return runningStatus.isLessRemainingWorkloadProcessExistIn(readyQueue);
     }
 
     private Pairs preempt() {
         return runningStatus.getBiggerRemainingWorkloadPairsComparedWith(readyQueue);
-    }
-
-    private Processes getTerminatedRunningProcesses() {
-        return runningStatus.getTerminatedProcesses();
-    }
-
-    private Processors getTerminatedRunningProcessors() {
-        return runningStatus.getTerminatedProcessors();
-    }
-
-    private void removeTerminatedPairsFromRunningStatus() {
-        runningStatus.removeTerminatedPairs();
     }
 
     private boolean isNotArrivedProcessesEmpty() {
@@ -128,6 +130,7 @@ public class SRTNScheduler extends Scheduler {
     private boolean isRunningProcessExist() {
         return !runningStatus.isProcessesEmpty();
     }
+
     private boolean isRunningProcessEmpty() {
         return runningStatus.isProcessesEmpty();
     }

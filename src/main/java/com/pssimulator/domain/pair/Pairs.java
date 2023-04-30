@@ -91,16 +91,6 @@ public class Pairs {
         return Processors.fromProcessors(terminatedProcessors);
     }
 
-    public void removeTerminatedPairs() {
-        for (int i = 0; i < pairs.size(); i++) {
-            Pair pair = pairs.get(i);
-            if (pair.isProcessTerminated()) {
-                pairs.remove(i);
-                i--;
-            }
-        }
-    }
-
     public void updateWorkloadAndBurstTimeOfProcesses() {
         pairs.forEach(Pair::updateWorkloadAndBurstTimeOfProcess);
     }

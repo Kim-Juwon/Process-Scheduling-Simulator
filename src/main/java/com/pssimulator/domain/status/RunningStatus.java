@@ -2,7 +2,6 @@ package com.pssimulator.domain.status;
 
 import com.pssimulator.domain.pair.Pair;
 import com.pssimulator.domain.pair.Pairs;
-import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.PowerConsumption;
 import com.pssimulator.domain.processor.Processors;
 import com.pssimulator.domain.queue.ReadyQueue;
@@ -38,20 +37,8 @@ public class RunningStatus {
         return pairs.getTerminatedPairs();
     }
 
-    public Processes getTerminatedProcesses() {
-        return pairs.getTerminatedProcesses();
-    }
-
-    public Processors getTerminatedProcessors() {
-        return pairs.getTerminatedProcessors();
-    }
-
     public Processors getProcessors() {
         return pairs.getProcessors();
-    }
-
-    public void removeTerminatedPairs() {
-        pairs.removeTerminatedPairs();
     }
 
     public void updateWorkloadAndBurstTimeOfProcesses() {
