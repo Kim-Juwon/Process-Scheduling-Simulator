@@ -15,7 +15,7 @@ public abstract class ReadyQueue {
 
     public abstract boolean isEmpty();
 
-    public abstract void addArrivedProcessesFrom(Processes processes, IntegerTime currentTime);
+    public abstract void addArrivedProcessesFrom(Processes processes, IntegerTime time);
 
     public abstract Process getNextProcess();
 

@@ -5,6 +5,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 @Getter
 public class ProcessRequestDto {
@@ -12,6 +13,7 @@ public class ProcessRequestDto {
     private String name;
 
     @NotNull(message = "프로세스의 arrival time은 필수입니다.")
+    @PositiveOrZero(message = "프로세스의 arrival time은 음수이면 안됩니다.")
     private Integer arrivalTime;
 
     @NotNull(message = "프로세스의 workload는 필수입니다.")

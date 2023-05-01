@@ -37,6 +37,14 @@ public class Pair {
         return this.process.isRemainingWorkloadBiggerThan(process);
     }
 
+    public boolean isRemainingWorkloadOfProcessBiggerThan(Double workloadAverage) {
+        return process.isRemainingWorkloadBiggerThan(workloadAverage);
+    }
+
+    public boolean isProcessMalneon(Double malneonBaselineRatio) {
+        return process.isMalneon(malneonBaselineRatio);
+    }
+
     public int compareByProcessRemainingWorkloadDescending(Pair pair) {
         return process.compareByRemainingWorkloadDescending(pair.getProcess());
     }

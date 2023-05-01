@@ -26,6 +26,10 @@ public class Workload {
         return this.workload > workload.getWorkload();
     }
 
+    public boolean isBiggerThan(Double workloadAverage) {
+        return workload > workloadAverage;
+    }
+
     public int compareByAscending(Workload workload) {
         return this.workload - workload.getWorkload();
     }

@@ -160,4 +160,29 @@ public class Pairs {
 
         return Pairs.from(biggerRemainingWorkloadPairs);
     }
+
+    public Pairs getTimeQuantumExpiredAndNotMalneonPairs(IntegerTime timeQuantum, Double malneonBaselineRatio, Double remainingTimeAverage) {
+        List<Pair> timeQuantumExpiredAndNotMalneonPairs = new ArrayList<>();
+
+        for (int i = 0; i < pairs.size(); i++) {
+            Pair pair = pairs.get(i);
+
+            if (pair.isProcessTimeQuantumExpired(timeQuantum)) {
+                if (pair.isProcessMalneon(malneonBaselineRatio)) {
+                    // ready queue의 starvation 방지를 위함
+                    if (pair.isRemainingWorkloadOfProcessBiggerThan(remainingTimeAverage)) {
+                        timeQuantumExpiredAndNotMalneonPairs.add(pair);
+                        pairs.remove(i);
+                        i--;
+                    }
+                } else {
+                    timeQuantumExpiredAndNotMalneonPairs.add(pair);
+                    pairs.remove(i);
+                    i--;
+                }
+            }
+        }
+
+        return Pairs.from(timeQuantumExpiredAndNotMalneonPairs);
+    }
 }

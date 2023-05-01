@@ -57,6 +57,15 @@ public class Process {
         return remainingWorkload.isBiggerThan(process.getRemainingWorkload());
     }
 
+    public boolean isRemainingWorkloadBiggerThan(Double workloadAverage) {
+        return remainingWorkload.isBiggerThan(workloadAverage);
+    }
+
+    public boolean isMalneon(Double malneonBaselineRatio) {
+        double malneonRatio = (double) remainingWorkload.getWorkload() / totalWorkload.getWorkload();
+        return malneonRatio <= malneonBaselineRatio;
+    }
+
     public void initializeRunningBurstTime() {
         runningBurstTime.changeToZero();
     }
