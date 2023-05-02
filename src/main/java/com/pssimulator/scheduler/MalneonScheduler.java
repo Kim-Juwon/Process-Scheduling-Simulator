@@ -63,6 +63,7 @@ public class MalneonScheduler extends Scheduler {
                     Processors preemptedProcessors = preemptedPairs.getProcessors();
 
                     initializeRunningBurstTimeOfProcessesFrom(preemptedProcesses);
+                    ungrantAdditionalTimeOfProcessesFrom(preemptedProcesses);
 
                     addProcessesToReadyQueueFrom(preemptedProcesses);
                     bringProcessorsBackFrom(preemptedProcessors);
@@ -112,19 +113,7 @@ public class MalneonScheduler extends Scheduler {
     }
 
     private Pairs preempt() {
-        Double remainingWorkloadAverageOfReadyProcesses = getRemainingWorkloadAverageOfReadyProcesses();
-        return runningStatus.getTimeQuantumExpiredAndNotMalneonPairs(timeQuantum, malneonBaselineRatio, remainingWorkloadAverageOfReadyProcesses);
-    }
-
-    private Double getRemainingWorkloadAverageOfReadyProcesses() {
-        List<Process> processesInReadyQueue = readyQueue.peekCurrentProcesses();
-
-        int sumOfRemainingWorkload = 0;
-        for (Process process : processesInReadyQueue) {
-            sumOfRemainingWorkload += process.getRemainingWorkload().getWorkload();
-        }
-
-        return (double) sumOfRemainingWorkload / processesInReadyQueue.size();
+        return runningStatus.getTimeQuantumExpiredAndNotMalneonPairs(timeQuantum, malneonBaselineRatio);
     }
 
     private void calculateResultOfTerminatedProcessesFrom(Processes terminatedProcesses) {
@@ -133,6 +122,10 @@ public class MalneonScheduler extends Scheduler {
 
     private void initializeRunningBurstTimeOfProcessesFrom(Processes terminatedProcesses) {
         terminatedProcesses.initializeRunningBurstTime();
+    }
+
+    private void ungrantAdditionalTimeOfProcessesFrom(Processes processes) {
+        processes.ungrantAdditionalTime();
     }
 
     private boolean isNotArrivedProcessesEmpty() {

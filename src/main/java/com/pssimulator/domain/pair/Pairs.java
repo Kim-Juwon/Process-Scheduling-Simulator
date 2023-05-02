@@ -161,7 +161,7 @@ public class Pairs {
         return Pairs.from(biggerRemainingWorkloadPairs);
     }
 
-    public Pairs getTimeQuantumExpiredAndNotMalneonPairs(IntegerTime timeQuantum, Double malneonBaselineRatio, Double remainingTimeAverage) {
+    public Pairs getTimeQuantumExpiredAndNotMalneonPairs(IntegerTime timeQuantum, Double malneonBaselineRatio) {
         List<Pair> timeQuantumExpiredAndNotMalneonPairs = new ArrayList<>();
 
         for (int i = 0; i < pairs.size(); i++) {
@@ -170,10 +170,18 @@ public class Pairs {
             if (pair.isProcessTimeQuantumExpired(timeQuantum)) {
                 if (pair.isProcessMalneon(malneonBaselineRatio)) {
                     // ready queue의 starvation 방지를 위함
-                    if (pair.isRemainingWorkloadOfProcessBiggerThan(remainingTimeAverage)) {
+
+                    // 한번 더 시간이 부여되었던 말년 프로세스라면 preempt
+                    if (pair.isProcessAdditionalTimeGranted()) {
                         timeQuantumExpiredAndNotMalneonPairs.add(pair);
                         pairs.remove(i);
                         i--;
+                    }
+                    // 시간이 부여되지 않았던 말년 프로세스라면, running burst time 초기화하고 추가 시간 부여
+                    else {
+                        Process process = pair.getProcess();
+                        process.initializeRunningBurstTime();
+                        process.grantAdditionalTime();
                     }
                 } else {
                     timeQuantumExpiredAndNotMalneonPairs.add(pair);

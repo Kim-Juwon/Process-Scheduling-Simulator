@@ -1,5 +1,6 @@
 package com.pssimulator.domain.process;
 
+import com.pssimulator.domain.grant.Grant;
 import com.pssimulator.domain.processor.Processor;
 import com.pssimulator.domain.ratio.ResponseRatio;
 import com.pssimulator.domain.time.DoubleTime;
@@ -21,6 +22,7 @@ public class Process {
     private final ResponseRatio responseRatio; // (waitingTime + workload) / workload
     private final Workload totalWorkload; // 총 해야할 작업량
     private final IntegerTime runningBurstTime; // preemption 되기 전까지 수행된 시간 (Round-Robin 에서 time quantum 만료 여부 사용에 판단)
+    private final Grant additionalTime;
 
     public static Process from(ProcessRequestDto dto) {
         return Process.builder()
@@ -34,6 +36,7 @@ public class Process {
                 .responseRatio(ResponseRatio.createEmpty())
                 .totalWorkload(Workload.from(dto.getWorkload()))
                 .runningBurstTime(IntegerTime.createZero())
+                .additionalTime(Grant.createFalse())
                 .build();
     }
 
@@ -57,13 +60,13 @@ public class Process {
         return remainingWorkload.isBiggerThan(process.getRemainingWorkload());
     }
 
-    public boolean isRemainingWorkloadBiggerThan(Double workloadAverage) {
-        return remainingWorkload.isBiggerThan(workloadAverage);
-    }
-
     public boolean isMalneon(Double malneonBaselineRatio) {
         double malneonRatio = (double) remainingWorkload.getWorkload() / totalWorkload.getWorkload();
         return malneonRatio <= malneonBaselineRatio;
+    }
+
+    public boolean isAdditionalTimeGranted() {
+        return additionalTime.isGranted();
     }
 
     public void initializeRunningBurstTime() {
@@ -109,6 +112,14 @@ public class Process {
     private void calculateNormalizedTurnaroundTime() {
         // NTT = TT / BT
         normalizedTurnaroundTime.changeTo(turnaroundTime.divide(burstTime));
+    }
+
+    public void grantAdditionalTime() {
+        additionalTime.grant();
+    }
+
+    public void ungrantAdditionalTime() {
+        additionalTime.ungrant();
     }
 
     public int compareBySPN(Process process) {

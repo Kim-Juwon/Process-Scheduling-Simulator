@@ -66,4 +66,8 @@ public class Processes {
     public void initializeRunningBurstTime() {
         processes.forEach(Process::initializeRunningBurstTime);
     }
+
+    public void ungrantAdditionalTime() {
+        processes.forEach(Process::ungrantAdditionalTime);
+    }
 }
