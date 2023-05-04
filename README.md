@@ -10,32 +10,32 @@
 - [SPN (Shortest-Process-Next)](https://ko.wikipedia.org/wiki/%EC%B5%9C%EB%8B%A8_%EC%9E%91%EC%97%85_%EC%9A%B0%EC%84%A0_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
 - [SRTN (Shortest-Remaining-Time-Next)](https://ko.wikipedia.org/wiki/%EC%B5%9C%EC%86%8C_%EC%9E%94%EB%A5%98_%EC%8B%9C%EA%B0%84_%EC%9A%B0%EC%84%A0_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
 - [HRRN (High-Response-Ratio-Next)](https://ko.wikipedia.org/wiki/HRRN_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
-- Your own algorithm
+- MN
 
 ## Request
 ### Processes
 - `1 <= processes.size() <= 99`
-- properties per processes 
+- 프로세스별 property 
   - **name** 
   - **arrivalTime**
   - **workload**
 ### Processors
 - `1 <= processors.size() <= 4`
-- properties per processors 
+- 프로세서별 property 
   - **name**
   - **core**
  
 ### Algorithm
-- Allow only one of the following
+- 다음 중 택 1
   - `FCFS`
   - `RR`
   - `SPN`
   - `SRTN`
   - `HRRN`
-  - `OSDS`
+  - `MN`
  
 ### Time quantum
-- For Round Robin algorithm
+- Round-Robin 알고리즘에서의 프로세스 실행 제한 시간
 
 ### Request JSON Example
 
@@ -72,10 +72,6 @@
         {
             "name": "Core1",
             "core": "E"
-        },
-        {
-            "name": "Core2",
-            "core": "P"
         }
     ],
     "algorithm": "RR",
@@ -84,38 +80,37 @@
 ```
 
 ## Response
-- List of information by time slice
+- 시간 구간(n ~ n + 1초)별 상태
 
 ### from
-- start time
+- start time (n)
 
 ### to
-- end time
+- end time (n + 1)
 
 ### Pairs
-- List of (Pair of process and processor)
-  - Processor is assigned to process, meaning it is performing work.
-- properties per pairs
+- [프로세스, 프로세서] pair 리스트
+  - 프로세서가 해당 프르세스에 할당되었다는 의미
+- pair별 property
   - **processorName**
   - **processName**
 
 ### ProcessorPowerConsumptions
-- List of total power consumption by processor
-- properties per pairs
+- 프로세서별 누적 전력 소비량
+- 프로세서 누적 전력 소비량별 property
   - **processorName**
   - **totalPowerConsumption**
 
 ### TotalPowerConsumption
-- Sum of the total power consumption of all processors
+- 모든 프로세서의 누적 전력 소비량 합
 
 ### Ready queue
-- Current state of the ready queue
-- List of process
-- Prioritized from front to back
+- 현재 ready queue 상태 (프로세스 리스트)
+- 우선순위순 (앞에서부터)
 
 ### Terminated Processes
-- List of terminated process
-- properties per process
+- 해당 시간에 종료된 프로세스 리스트
+- 프로세스별 property
   - **name**
   - **arrivalTime**
   - **burstTime**
@@ -135,129 +130,104 @@
                 {
                     "processorName": "Core1",
                     "processName": "p1"
-                },
-                {
-                    "processorName": "Core2",
-                    "processName": null
                 }
             ],
             "processorPowerConsumptions": [
                 {
                     "processorName": "Core1",
                     "totalPowerConsumption": 1.1
-                },
-                {
-                    "processorName": "Core2",
-                    "totalPowerConsumption": 0.0
                 }
             ],
             "totalPowerConsumption": 1.1,
             "readyQueue": [],
             "terminatedProcesses": []
         },
-        {
-            "from": 1,
-            "to": 2,
-            "pairs": [
-                {
-                    "processorName": "Core1",
-                    "processName": "p1"
-                },
-                {
-                    "processorName": "Core2",
-                    "processName": "p2"
-                }
-            ],
-            "processorPowerConsumptions": [
-                {
-                    "processorName": "Core1",
-                    "totalPowerConsumption": 2.1
-                },
-                {
-                    "processorName": "Core2",
-                    "totalPowerConsumption": 3.5
-                }
-            ],
-            "totalPowerConsumption": 5.6,
-            "readyQueue": [],
-            "terminatedProcesses": []
-        },
         
-        ... 
         ...
         skip
         ...
-        ...
         
         {
-            "from": 17,
-            "to": 18,
+            "from": 6,
+            "to": 7,
             "pairs": [
                 {
                     "processorName": "Core1",
-                    "processName": "p5"
-                },
-                {
-                    "processorName": "Core2",
-                    "processName": null
+                    "processName": "p3"
                 }
             ],
             "processorPowerConsumptions": [
                 {
                     "processorName": "Core1",
-                    "totalPowerConsumption": 18.9
-                },
-                {
-                    "processorName": "Core2",
-                    "totalPowerConsumption": 52.5
+                    "totalPowerConsumption": 7.3999999999999995
                 }
             ],
-            "totalPowerConsumption": 71.4,
+            "totalPowerConsumption": 7.4,
+            "readyQueue": [
+                "p2",
+                "p4",
+                "p5"
+            ],
+            "terminatedProcesses": []
+        },
+        
+        ...
+        skip
+        ...
+        
+        {
+            "from": 19,
+            "to": 20,
+            "pairs": [
+                {
+                    "processorName": "Core1",
+                    "processName": "p4"
+                }
+            ],
+            "processorPowerConsumptions": [
+                {
+                    "processorName": "Core1",
+                    "totalPowerConsumption": 21.200000000000003
+                }
+            ],
+            "totalPowerConsumption": 21.200000000000003,
             "readyQueue": [],
             "terminatedProcesses": [
                 {
-                    "name": "p3",
-                    "arrivalTime": 3,
-                    "burstTime": 8,
-                    "waitingTime": 6,
-                    "turnaroundTime": 14,
-                    "normalizedTurnaroundTime": 1.75
+                    "name": "p2",
+                    "arrivalTime": 1,
+                    "burstTime": 7,
+                    "waitingTime": 11,
+                    "turnaroundTime": 18,
+                    "normalizedTurnaroundTime": 2.5714285714285716
                 }
             ]
         },
         {
-            "from": 18,
-            "to": 19,
+            "from": 20,
+            "to": 21,
             "pairs": [
                 {
                     "processorName": "Core1",
-                    "processName": null
-                },
-                {
-                    "processorName": "Core2",
                     "processName": null
                 }
             ],
             "processorPowerConsumptions": [
                 {
                     "processorName": "Core1",
-                    "totalPowerConsumption": 18.9
-                },
-                {
-                    "processorName": "Core2",
-                    "totalPowerConsumption": 52.5
+                    "totalPowerConsumption": 21.200000000000003
                 }
             ],
-            "totalPowerConsumption": 71.4,
+            "totalPowerConsumption": 21.200000000000003,
             "readyQueue": [],
             "terminatedProcesses": [
                 {
-                    "name": "p5",
+                    "name": "p4",
                     "arrivalTime": 5,
-                    "burstTime": 8,
-                    "waitingTime": 5,
-                    "turnaroundTime": 13,
-                    "normalizedTurnaroundTime": 1.625
+                    "burstTime": 5,
+                    "waitingTime": 10,
+                    "turnaroundTime": 15,
+                    "normalizedTurnaroundTime": 3.0
                 }
             ]
         }
