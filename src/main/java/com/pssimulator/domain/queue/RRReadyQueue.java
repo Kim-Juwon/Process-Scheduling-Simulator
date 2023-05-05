@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class RRReadyQueue extends ReadyQueue {
+public class RRReadyQueue extends ReadyQueue implements Preemptible {
     private RRReadyQueue(Queue<Process> readyQueue) {
         super(readyQueue);
     }
@@ -59,6 +59,7 @@ public class RRReadyQueue extends ReadyQueue {
         return processes;
     }
 
+    @Override
     public void addPreemptedProcesses(Processes preemptedProcesses) {
         readyQueue.addAll(preemptedProcesses.getProcesses());
     }

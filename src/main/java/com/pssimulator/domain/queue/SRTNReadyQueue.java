@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-public class SRTNReadyQueue extends ReadyQueue {
+public class SRTNReadyQueue extends ReadyQueue implements Preemptible {
     private SRTNReadyQueue(Queue<Process> readyQueue) {
         super(readyQueue);
     }
@@ -61,6 +61,7 @@ public class SRTNReadyQueue extends ReadyQueue {
         return processes;
     }
 
+    @Override
     public void addPreemptedProcesses(Processes preemptedProcesses) {
         readyQueue.addAll(preemptedProcesses.getProcesses());
     }

@@ -8,6 +8,7 @@ import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.Processor;
 import com.pssimulator.domain.processor.Processors;
 import com.pssimulator.domain.queue.MNReadyQueue;
+import com.pssimulator.domain.queue.Preemptible;
 import com.pssimulator.domain.status.RunningStatus;
 import com.pssimulator.domain.time.IntegerTime;
 import com.pssimulator.dto.request.Request;
@@ -117,8 +118,7 @@ public class MNScheduler extends Scheduler {
     }
 
     private void addProcessesToReadyQueueFrom(Processes processes) {
-        MNReadyQueue malneonReadyQueue = (MNReadyQueue) readyQueue;
-        malneonReadyQueue.addPreemptedProcesses(processes);
+        ((Preemptible) readyQueue).addPreemptedProcesses(processes);
     }
 
     private boolean isTerminatedRunningProcessExist() {

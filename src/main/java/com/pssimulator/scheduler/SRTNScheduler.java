@@ -6,6 +6,7 @@ import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.Processor;
 import com.pssimulator.domain.processor.Processors;
+import com.pssimulator.domain.queue.Preemptible;
 import com.pssimulator.domain.queue.SRTNReadyQueue;
 import com.pssimulator.domain.status.RunningStatus;
 import com.pssimulator.dto.request.Request;
@@ -114,9 +115,8 @@ public class SRTNScheduler extends Scheduler {
         readyQueue.addArrivedProcessesFrom(notArrivedProcesses, runningStatus.getCurrentTime());
     }
 
-    private void addProcessesToReadyQueueFrom(Processes preemptedProcesses) {
-        SRTNReadyQueue srtnReadyQueue = (SRTNReadyQueue) readyQueue;
-        srtnReadyQueue.addPreemptedProcesses(preemptedProcesses);
+    private void addProcessesToReadyQueueFrom(Processes processes) {
+        ((Preemptible) readyQueue).addPreemptedProcesses(processes);
     }
 
     private boolean isTerminatedRunningProcessExist() {

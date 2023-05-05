@@ -6,6 +6,7 @@ import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.Processor;
 import com.pssimulator.domain.processor.Processors;
+import com.pssimulator.domain.queue.Preemptible;
 import com.pssimulator.domain.queue.RRReadyQueue;
 import com.pssimulator.domain.status.RunningStatus;
 import com.pssimulator.domain.time.IntegerTime;
@@ -110,8 +111,7 @@ public class RRScheduler extends Scheduler {
     }
 
     private void addProcessesToReadyQueueFrom(Processes processes) {
-        RRReadyQueue rrReadyQueue = (RRReadyQueue) readyQueue;
-        rrReadyQueue.addPreemptedProcesses(processes);
+        ((Preemptible) readyQueue).addPreemptedProcesses(processes);
     }
 
     private boolean isTerminatedRunningProcessExist() {
