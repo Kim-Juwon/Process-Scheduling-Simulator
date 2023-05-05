@@ -24,8 +24,8 @@ public class SPNReadyQueue extends ReadyQueue {
     }
 
     @Override
-    public void addArrivedProcessesFrom(Processes processes, IntegerTime currentTime) {
-        readyQueue.addAll(processes.getArrivedProcessesAt(currentTime));
+    public void addArrivedProcessesFrom(Processes processes, IntegerTime time) {
+        readyQueue.addAll(processes.getArrivedProcessesAt(time));
     }
 
     @Override

@@ -25,9 +25,8 @@ public class SRTNReadyQueue extends ReadyQueue implements Preemptible {
     }
 
     @Override
-    public void addArrivedProcessesFrom(Processes processes, IntegerTime currentTime) {
-        List<Process> arrivedProcesses = processes.getArrivedProcessesAt(currentTime);
-        readyQueue.addAll(arrivedProcesses);
+    public void addArrivedProcessesFrom(Processes processes, IntegerTime time) {
+        readyQueue.addAll(processes.getArrivedProcessesAt(time));
     }
 
     @Override

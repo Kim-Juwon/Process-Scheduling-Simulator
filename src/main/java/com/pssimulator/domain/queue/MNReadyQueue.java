@@ -60,7 +60,7 @@ public class MNReadyQueue extends ReadyQueue implements Preemptible {
     }
 
     @Override
-    public void addPreemptedProcesses(Processes processes) {
-        readyQueue.addAll(processes.getProcesses());
+    public void addPreemptedProcesses(Processes preemptedProcesses) {
+        readyQueue.addAll(preemptedProcesses.getProcesses());
     }
 }

@@ -24,10 +24,14 @@ public class HRRNReadyQueue extends ReadyQueue {
     }
 
     @Override
-    public void addArrivedProcessesFrom(Processes processes, IntegerTime currentTime) {
+    public void addArrivedProcessesFrom(Processes processes, IntegerTime time) {
+        /*
+             도착한 프로세스들을 삽입하기 전에,
+             ready queue 내부의 프로세스들의 response ratio를 업데이트하고 재정렬
+         */
         updateBasedOnResponseRatio();
 
-        List<Process> arrivedProcesses = processes.getArrivedProcessesAt(currentTime);
+        List<Process> arrivedProcesses = processes.getArrivedProcessesAt(time);
         calculateResponseRatioFrom(arrivedProcesses);
         readyQueue.addAll(arrivedProcesses);
     }

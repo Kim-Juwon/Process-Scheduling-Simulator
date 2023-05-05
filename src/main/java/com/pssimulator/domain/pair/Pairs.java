@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class Pairs {
     private final List<Pair> pairs;
 
-    // pair의 삭제가 빈번하게 일어나므로 linked list로 구성한다.
+    // 삭제가 빈번하게 일어나므로 객체 생성시 linked list로 구성한다.
     public static Pairs createEmpty() {
         return new Pairs(new LinkedList<>());
     }
@@ -143,16 +143,24 @@ public class Pairs {
     public Pairs getBiggerRemainingWorkloadPairsComparedWith(ReadyQueue readyQueue) {
         List<Process> processesInReadyQueue = readyQueue.peekCurrentProcesses();
 
+        // ready state 프로세스들을 잔여 작업량 내림차순으로 정렬
         processesInReadyQueue.sort(Process::compareByRemainingWorkloadDescending);
+        // running 프로세스들을 잔여 작업량 내림차순으로 정렬
         pairs.sort(Pair::compareByProcessRemainingWorkloadDescending);
 
         List<Pair> biggerRemainingWorkloadPairs = new ArrayList<>();
         for (int i = 0; i < pairs.size(); i++) {
-            Pair runningPair = pairs.get(i);
+            Pair pair = pairs.get(i);
             for (int j = 0; j < processesInReadyQueue.size(); j++) {
-                Process processInReadyQueue = processesInReadyQueue.get(j);
-                if (runningPair.isProcessRemainingWorkloadBiggerThan(processInReadyQueue)) {
-                    biggerRemainingWorkloadPairs.add(runningPair);
+                Process readyProcess = processesInReadyQueue.get(j);
+
+                /*
+                      ready 프로세스보다 잔여 작업량이 더 큰 running 프로세스가 있다면,
+                      해당 running pair를 추출하고,
+                      해당 running pair 및 ready 프로세스를 삭제
+                 */
+                if (pair.isProcessRemainingWorkloadBiggerThan(readyProcess)) {
+                    biggerRemainingWorkloadPairs.add(pair);
                     pairs.remove(i);
                     processesInReadyQueue.remove(j);
                     i--;

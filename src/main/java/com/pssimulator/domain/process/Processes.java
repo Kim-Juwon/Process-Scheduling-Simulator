@@ -16,6 +16,10 @@ import java.util.stream.Collectors;
 public class Processes {
     private final List<Process> processes;
 
+    /*
+         삭제가 빈번하게 일어나므로 객체 생성시에는 linked list로 구성한다.
+     */
+
     public static Processes from(List<ProcessRequestDto> dtos) {
         List<Process> processes = dtos.stream()
                 .map(Process::from)

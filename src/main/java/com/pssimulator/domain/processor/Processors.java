@@ -16,6 +16,10 @@ public class Processors {
 
     private final List<Processor> processors;
 
+    /*
+        삭제가 빈번하게 일어나므로 객체 생성시 linked list로 구성한다.
+     */
+
     public static Processors createEmpty() {
         return new Processors(new LinkedList<>());
     }
