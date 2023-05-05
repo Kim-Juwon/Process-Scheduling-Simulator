@@ -134,8 +134,8 @@ public class RRScheduler extends Scheduler {
         terminatedProcesses.calculateResult();
     }
 
-    private void initializeRunningBurstTimeOfProcessesFrom(Processes terminatedProcesses) {
-        terminatedProcesses.initializeRunningBurstTime();
+    private void initializeRunningBurstTimeOfProcessesFrom(Processes processes) {
+        processes.initializeRunningBurstTime();
     }
 
     private boolean isNotArrivedProcessesEmpty() {
