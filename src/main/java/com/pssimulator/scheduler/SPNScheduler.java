@@ -49,6 +49,8 @@ public class SPNScheduler extends Scheduler {
                 assignProcessorsToProcessesAndRegisterToRunningStatus();
             }
 
+            changeAvailableProcessorsToRequireStartupPower();
+
             increaseWaitingTimeOfProcessesInReadyQueue();
             updateWorkloadAndBurstTimeOfRunningProcesses();
             updatePowerConsumption();
@@ -99,8 +101,11 @@ public class SPNScheduler extends Scheduler {
     }
 
     private void bringProcessorsBackFrom(Processors processors) {
-        processors.changeToRequiredStartupPower();
         availableProcessors.addProcessors(processors);
+    }
+
+    private void changeAvailableProcessorsToRequireStartupPower() {
+        availableProcessors.changeToRequiredStartupPower();
     }
 
     private boolean isProcessExistInReadyQueue() {
