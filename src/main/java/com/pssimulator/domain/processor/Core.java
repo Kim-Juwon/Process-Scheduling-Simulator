@@ -1,6 +1,8 @@
 package com.pssimulator.domain.processor;
 
 import com.pssimulator.dto.request.CoreDto;
+import com.pssimulator.exception.ExceptionMessages;
+import com.pssimulator.exception.InternalServerErrorException;
 import lombok.Getter;
 
 @Getter
@@ -24,7 +26,8 @@ public enum Core {
                 return core;
             }
         }
-        throw new RuntimeException();
+
+        throw new InternalServerErrorException(ExceptionMessages.CORE_NOT_FOUND);
     }
 
     private boolean isSame(CoreDto dto) {

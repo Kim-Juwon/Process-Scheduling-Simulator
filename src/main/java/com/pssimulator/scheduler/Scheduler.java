@@ -7,6 +7,8 @@ import com.pssimulator.domain.status.RunningStatus;
 import com.pssimulator.dto.request.AlgorithmDto;
 import com.pssimulator.dto.request.Request;
 import com.pssimulator.dto.response.Response;
+import com.pssimulator.exception.ExceptionMessages;
+import com.pssimulator.exception.InternalServerErrorException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -41,6 +43,6 @@ public abstract class Scheduler {
             return MNScheduler.from(request);
         }
 
-        return null;
+        throw new InternalServerErrorException(ExceptionMessages.ALGORITHM_NOT_FOUND);
     }
 }
