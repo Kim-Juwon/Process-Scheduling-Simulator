@@ -1,4 +1,4 @@
-package com.pssimulator.exception;
+package com.pssimulator.exception.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
