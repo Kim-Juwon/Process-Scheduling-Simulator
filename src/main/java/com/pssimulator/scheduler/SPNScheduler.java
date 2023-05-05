@@ -36,7 +36,7 @@ public class SPNScheduler extends Scheduler {
 
             // running state 프로세스중 현재 시간에 종료된 프로세스가 있다면
             if (isTerminatedRunningProcessExist()) {
-                // 종료된 프로세스들 및 해당 프로세스들에 할당되었던 프로세서들의 정보를 가져옴
+                // 종료된 프로세스들 및 해당 프로세스들에 할당되었던 프로세서들을 가져옴
                 Pairs pairs = getTerminatedPairs();
                 Processes terminatedProcesses = pairs.getTerminatedProcesses();
                 Processors terminatedProcessors = pairs.getTerminatedProcessors();
@@ -44,7 +44,7 @@ public class SPNScheduler extends Scheduler {
                 // 종료된 프로세스들의 TT와 NTT 계산
                 calculateResultOfTerminatedProcessesFrom(terminatedProcesses);
 
-                // 종료된 프로세서들에게 할당되었던 프로세서들을 회수
+                // 종료된 프로세스들에게 할당되었던 프로세서들을 회수
                 bringProcessorsBackFrom(terminatedProcessors);
 
                 // 응답 객체에 현재 시간에 종료된 프로세스들 정보를 저장
