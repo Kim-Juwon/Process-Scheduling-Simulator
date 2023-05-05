@@ -29,35 +29,47 @@ public class HRRNScheduler extends Scheduler {
     public Response schedule(Request request) {
         Response response = Response.create();
 
+        // 아직 도착하지 않은 프로세스, ready state 프로세스, running state 프로세스 중 1개라도 존재할경우 스케줄링
         while (isRemainingProcessExist()) {
+            // 현재 시간에 도착한 프로세스가 있다면 ready queue에 삽입
             addArrivedProcessesToReadyQueue();
 
+            // running state 프로세스중 현재 시간에 종료된 프로세스가 있다면
             if (isTerminatedRunningProcessExist()) {
+                // 종료된 프로세스들 및 해당 프로세스들에 할당되었던 프로세서들의 정보를 가져옴
                 Pairs pairs = getTerminatedPairs();
                 Processes terminatedProcesses = pairs.getTerminatedProcesses();
                 Processors terminatedProcessors = pairs.getTerminatedProcessors();
 
+                // 종료된 프로세스들의 TT와 NTT 계산
                 calculateResultOfTerminatedProcessesFrom(terminatedProcesses);
-                initializeRunningBurstTimeOfProcessesFrom(terminatedProcesses);
 
+                // 종료된 프로세서들에게 할당되었던 프로세서들을 회수
                 bringProcessorsBackFrom(terminatedProcessors);
 
+                // 응답 객체에 현재 시간에 종료된 프로세스들 정보를 저장
                 response.addTerminatedProcessesFrom(terminatedProcesses);
             }
 
+            // ready queue에 프로세스가 존재한다면
             if (isProcessExistInReadyQueue()) {
+                // 가용 가능한 프로세서들을 최대한 프로세스들에게 할당하고 running state로 전이
                 assignProcessorsToProcessesAndRegisterToRunningStatus();
             }
 
+            // 쉬고있는 프로세서들은 다음 작업시 시동전력이 필요하다고 변경
             changeAvailableProcessorsToRequireStartupPower();
 
+            // 프로세스들의 WT, BT 계산 및 프로세서들의 누적 전력 소비량 계산
             increaseWaitingTimeOfProcessesInReadyQueue();
             updateWorkloadAndBurstTimeOfRunningProcesses();
             updatePowerConsumption();
 
+            // 현재 시간의 스케줄링 상태를 응답 객체에 저장하고, 현재 시간에 대한 정보 적용은 완료되었다고 알림
             addResultTo(response);
             applyCurrentTimeStatusTo(response);
 
+            // 현재 시간을 1초 증가시킴
             increaseCurrentTime();
         }
 
@@ -82,10 +94,6 @@ public class HRRNScheduler extends Scheduler {
 
     private void calculateResultOfTerminatedProcessesFrom(Processes terminatedProcesses) {
         terminatedProcesses.calculateResult();
-    }
-
-    private void initializeRunningBurstTimeOfProcessesFrom(Processes terminatedProcesses) {
-        terminatedProcesses.initializeRunningBurstTime();
     }
 
     private boolean isNotArrivedProcessesEmpty() {
