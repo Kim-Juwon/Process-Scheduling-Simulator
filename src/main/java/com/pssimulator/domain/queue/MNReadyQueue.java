@@ -9,13 +9,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class MalneonReadyQueue extends ReadyQueue {
-    private MalneonReadyQueue(Queue<Process> readyQueue) {
+public class MNReadyQueue extends ReadyQueue {
+    private MNReadyQueue(Queue<Process> readyQueue) {
         super(readyQueue);
     }
 
-    public static MalneonReadyQueue createEmpty() {
-        return new MalneonReadyQueue(new LinkedList<>());
+    public static MNReadyQueue createEmpty() {
+        return new MNReadyQueue(new LinkedList<>());
     }
 
     @Override

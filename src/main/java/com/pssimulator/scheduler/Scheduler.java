@@ -37,8 +37,8 @@ public abstract class Scheduler {
         if (algorithm.equals(AlgorithmDto.HRRN)) {
             return HRRNScheduler.from(request);
         }
-        if (algorithm.equals(AlgorithmDto.MALNEON)) {
-            return MalneonScheduler.from(request);
+        if (algorithm.equals(AlgorithmDto.MN)) {
+            return MNScheduler.from(request);
         }
 
         return null;

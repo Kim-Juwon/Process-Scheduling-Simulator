@@ -47,6 +47,7 @@ public class Processes {
     public List<Process> getArrivedProcessesAt(IntegerTime time) {
         List<Process> arrivedProcesses = new ArrayList<>();
 
+        // remove arrived processes
         for (int i = 0; i < processes.size(); i++) {
             Process process = processes.get(i);
             if (process.hasSameArrivalTime(time)) {

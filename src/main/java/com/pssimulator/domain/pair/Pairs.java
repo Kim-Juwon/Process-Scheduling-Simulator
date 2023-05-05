@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class Pairs {
     private final List<Pair> pairs;
 
+    // pair의 삭제가 빈번하게 일어나므로 linked list로 구성한다.
     public static Pairs createEmpty() {
         return new Pairs(new LinkedList<>());
     }
@@ -61,6 +62,7 @@ public class Pairs {
     public Pairs getTerminatedPairs() {
         List<Pair> terminatedPairs = new ArrayList<>();
 
+        // remove terminated pairs
         for (int i = 0; i < pairs.size(); i++) {
             Pair pair = pairs.get(i);
             if (pair.isProcessTerminated()) {
@@ -113,6 +115,7 @@ public class Pairs {
     public Pairs getTimeQuantumExpiredPairs(IntegerTime timeQuantum) {
         List<Pair> timeQuantumExpiredPairs = new ArrayList<>();
 
+        // remove time quantum expired pairs
         for (int i = 0; i < pairs.size(); i++) {
             Pair pair = pairs.get(i);
             if (pair.isProcessTimeQuantumExpired(timeQuantum)) {
@@ -161,17 +164,15 @@ public class Pairs {
         return Pairs.from(biggerRemainingWorkloadPairs);
     }
 
-    public Pairs getTimeQuantumExpiredAndNotMalneonPairs(IntegerTime timeQuantum, Double malneonBaselineRatio) {
+    public Pairs getTimeQuantumExpiredAndNotMalneonPairs(IntegerTime timeQuantum, Double remainingWorkloadBaselineRatio) {
         List<Pair> timeQuantumExpiredAndNotMalneonPairs = new ArrayList<>();
 
         for (int i = 0; i < pairs.size(); i++) {
             Pair pair = pairs.get(i);
 
             if (pair.isProcessTimeQuantumExpired(timeQuantum)) {
-                if (pair.isProcessMalneon(malneonBaselineRatio)) {
-                    // ready queue의 starvation 방지를 위함
-
-                    // 한번 더 시간이 부여되었던 말년 프로세스라면 preempt
+                if (pair.isProcessMalneon(remainingWorkloadBaselineRatio)) {
+                    // 한번 더 시간이 부여되었던 말년 프로세스라면 preempt (starvation 방지)
                     if (pair.isProcessAdditionalTimeGranted()) {
                         timeQuantumExpiredAndNotMalneonPairs.add(pair);
                         pairs.remove(i);

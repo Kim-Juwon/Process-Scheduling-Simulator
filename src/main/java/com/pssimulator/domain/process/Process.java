@@ -22,7 +22,7 @@ public class Process {
     private final ResponseRatio responseRatio; // (waitingTime + workload) / workload
     private final Workload totalWorkload; // 총 해야할 작업량
     private final IntegerTime runningBurstTime; // preemption 되기 전까지 수행된 시간 (Round-Robin 에서 time quantum 만료 여부 사용에 판단)
-    private final Grant additionalTime;
+    private final Grant additionalTimeGrant; // 시간이 한번 더 부여됐는지 여부 (말년병장 알고리즘에서 사용)
 
     public static Process from(ProcessRequestDto dto) {
         return Process.builder()
@@ -36,7 +36,7 @@ public class Process {
                 .responseRatio(ResponseRatio.createEmpty())
                 .totalWorkload(Workload.from(dto.getWorkload()))
                 .runningBurstTime(IntegerTime.createZero())
-                .additionalTime(Grant.createFalse())
+                .additionalTimeGrant(Grant.createFalse())
                 .build();
     }
 
@@ -60,13 +60,13 @@ public class Process {
         return remainingWorkload.isBiggerThan(process.getRemainingWorkload());
     }
 
-    public boolean isMalneon(Double malneonBaselineRatio) {
+    public boolean isMalneon(Double remainingWorkloadBaselineRatio) {
         double malneonRatio = (double) remainingWorkload.getWorkload() / totalWorkload.getWorkload();
-        return malneonRatio <= malneonBaselineRatio;
+        return malneonRatio <= remainingWorkloadBaselineRatio;
     }
 
     public boolean isAdditionalTimeGranted() {
-        return additionalTime.isGranted();
+        return additionalTimeGrant.isGranted();
     }
 
     public void initializeRunningBurstTime() {
@@ -115,11 +115,11 @@ public class Process {
     }
 
     public void grantAdditionalTime() {
-        additionalTime.grant();
+        additionalTimeGrant.grant();
     }
 
     public void ungrantAdditionalTime() {
-        additionalTime.ungrant();
+        additionalTimeGrant.ungrant();
     }
 
     public int compareBySPN(Process process) {

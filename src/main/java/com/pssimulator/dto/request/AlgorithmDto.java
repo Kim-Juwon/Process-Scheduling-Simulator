@@ -6,5 +6,5 @@ public enum AlgorithmDto {
     SPN,
     SRTN,
     HRRN,
-    MALNEON
+    MN
 }

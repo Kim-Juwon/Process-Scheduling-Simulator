@@ -7,33 +7,30 @@ import com.pssimulator.domain.process.Process;
 import com.pssimulator.domain.process.Processes;
 import com.pssimulator.domain.processor.Processor;
 import com.pssimulator.domain.processor.Processors;
-import com.pssimulator.domain.queue.MalneonReadyQueue;
-import com.pssimulator.domain.queue.RRReadyQueue;
+import com.pssimulator.domain.queue.MNReadyQueue;
 import com.pssimulator.domain.status.RunningStatus;
 import com.pssimulator.domain.time.IntegerTime;
 import com.pssimulator.dto.request.Request;
 import com.pssimulator.dto.response.Response;
 
-import java.util.List;
-
-public class MalneonScheduler extends Scheduler {
+public class MNScheduler extends Scheduler {
     private final IntegerTime timeQuantum;
-    private final Double malneonBaselineRatio;
+    private final Double remainingWorkloadBaselineRatio;
 
-    private MalneonScheduler(MalneonReadyQueue malneonReadyQueue, Processes processes, Processors processors, RunningStatus runningStatus, IntegerTime timeQuantum, Double malneonBaselineRatio) {
-        super(malneonReadyQueue, processes, processors, runningStatus);
+    private MNScheduler(MNReadyQueue mnReadyQueue, Processes processes, Processors processors, RunningStatus runningStatus, IntegerTime timeQuantum, Double remainingWorkloadBaselineRatio) {
+        super(mnReadyQueue, processes, processors, runningStatus);
         this.timeQuantum = timeQuantum;
-        this.malneonBaselineRatio = malneonBaselineRatio;
+        this.remainingWorkloadBaselineRatio = remainingWorkloadBaselineRatio;
     }
 
-    public static MalneonScheduler from(Request request) {
-        return new MalneonScheduler(
-                MalneonReadyQueue.createEmpty(),
+    public static MNScheduler from(Request request) {
+        return new MNScheduler(
+                MNReadyQueue.createEmpty(),
                 Processes.from(request.getProcesses()),
                 Processors.from(request.getProcessors()),
                 RunningStatus.create(),
                 IntegerTime.from(request.getTimeQuantum()),
-                ProgramConstants.MALNEON_BASELINE_RATIO
+                ProgramConstants.REMAINING_WORKLOAD_BASELINE_RATIO
         );
     }
 
@@ -96,7 +93,7 @@ public class MalneonScheduler extends Scheduler {
     }
 
     private void addProcessesToReadyQueueFrom(Processes processes) {
-        MalneonReadyQueue malneonReadyQueue = (MalneonReadyQueue) readyQueue;
+        MNReadyQueue malneonReadyQueue = (MNReadyQueue) readyQueue;
         malneonReadyQueue.addPreemptedProcesses(processes);
     }
 
@@ -113,7 +110,7 @@ public class MalneonScheduler extends Scheduler {
     }
 
     private Pairs preempt() {
-        return runningStatus.getTimeQuantumExpiredAndNotMalneonPairs(timeQuantum, malneonBaselineRatio);
+        return runningStatus.getTimeQuantumExpiredAndNotMalneonPairs(timeQuantum, remainingWorkloadBaselineRatio);
     }
 
     private void calculateResultOfTerminatedProcessesFrom(Processes terminatedProcesses) {
