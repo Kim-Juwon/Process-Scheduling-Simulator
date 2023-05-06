@@ -172,34 +172,34 @@ public class Pairs {
         return Pairs.from(biggerRemainingWorkloadPairs);
     }
 
-    public Pairs getTimeQuantumExpiredAndNotMalneonPairs(IntegerTime timeQuantum, Double remainingWorkloadBaselineRatio) {
-        List<Pair> timeQuantumExpiredAndNotMalneonPairs = new ArrayList<>();
+    public Pairs getMNPreemptionConditionPairs(IntegerTime timeQuantum) {
+        List<Pair> preemptedPairs = new ArrayList<>();
 
         for (int i = 0; i < pairs.size(); i++) {
             Pair pair = pairs.get(i);
 
             if (pair.isProcessTimeQuantumExpired(timeQuantum)) {
-                if (pair.isProcessMalneon(remainingWorkloadBaselineRatio)) {
+                if (pair.isProcessMalneon()) {
                     // 한번 더 시간이 부여되었던 말년 프로세스라면 preempt (starvation 방지)
                     if (pair.isProcessAdditionalTimeGranted()) {
-                        timeQuantumExpiredAndNotMalneonPairs.add(pair);
+                        preemptedPairs.add(pair);
                         pairs.remove(i);
                         i--;
                     }
-                    // 시간이 부여되지 않았던 말년 프로세스라면, running burst time 초기화하고 추가 시간 부여
+                    // 추가 시간이 부여되지 않았던 말년 프로세스라면, running burst time 초기화하고 추가 시간 부여
                     else {
                         Process process = pair.getProcess();
                         process.initializeRunningBurstTime();
                         process.grantAdditionalTime();
                     }
                 } else {
-                    timeQuantumExpiredAndNotMalneonPairs.add(pair);
+                    preemptedPairs.add(pair);
                     pairs.remove(i);
                     i--;
                 }
             }
         }
 
-        return Pairs.from(timeQuantumExpiredAndNotMalneonPairs);
+        return Pairs.from(preemptedPairs);
     }
 }

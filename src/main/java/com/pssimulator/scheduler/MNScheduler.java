@@ -1,6 +1,5 @@
 package com.pssimulator.scheduler;
 
-import com.pssimulator.domain.constant.ProgramConstants;
 import com.pssimulator.domain.pair.Pair;
 import com.pssimulator.domain.pair.Pairs;
 import com.pssimulator.domain.process.Process;
@@ -16,12 +15,10 @@ import com.pssimulator.dto.response.Response;
 
 public class MNScheduler extends Scheduler {
     private final IntegerTime timeQuantum;
-    private final Double remainingWorkloadBaselineRatio;
 
-    private MNScheduler(MNReadyQueue mnReadyQueue, Processes processes, Processors processors, RunningStatus runningStatus, IntegerTime timeQuantum, Double remainingWorkloadBaselineRatio) {
+    private MNScheduler(MNReadyQueue mnReadyQueue, Processes processes, Processors processors, RunningStatus runningStatus, IntegerTime timeQuantum) {
         super(mnReadyQueue, processes, processors, runningStatus);
         this.timeQuantum = timeQuantum;
-        this.remainingWorkloadBaselineRatio = remainingWorkloadBaselineRatio;
     }
 
     public static MNScheduler from(Request request) {
@@ -30,8 +27,7 @@ public class MNScheduler extends Scheduler {
                 Processes.from(request.getProcesses()),
                 Processors.from(request.getProcessors()),
                 RunningStatus.create(),
-                IntegerTime.from(request.getTimeQuantum()),
-                ProgramConstants.REMAINING_WORKLOAD_BASELINE_RATIO
+                IntegerTime.from(request.getTimeQuantum())
         );
     }
 
@@ -73,7 +69,7 @@ public class MNScheduler extends Scheduler {
                     // 선점당할 프로세스들의 running burst time 초기화 (burst time X)
                     initializeRunningBurstTimeOfProcessesFrom(preemptedProcesses);
 
-                    // time quantum 만큼의 시간이 한번 더 부여되었다는 flag를 초기화
+                    // time quantum 만큼의 시간이 한번 더 부여된 여부를 false로 변경
                     ungrantAdditionalTimeOfProcessesFrom(preemptedProcesses);
 
                     // 선점당할 프로세스들을 ready queue에 차례로 삽입
@@ -134,7 +130,7 @@ public class MNScheduler extends Scheduler {
     }
 
     private Pairs preempt() {
-        return runningStatus.getTimeQuantumExpiredAndNotMalneonPairs(timeQuantum, remainingWorkloadBaselineRatio);
+        return runningStatus.getMNPreemptionConditionPairs(timeQuantum);
     }
 
     private void calculateResultOfTerminatedProcessesFrom(Processes terminatedProcesses) {

@@ -37,8 +37,8 @@ public class Pair {
         return this.process.isRemainingWorkloadBiggerThan(process);
     }
 
-    public boolean isProcessMalneon(Double remainingWorkloadBaselineRatio) {
-        return process.isMalneon(remainingWorkloadBaselineRatio);
+    public boolean isProcessMalneon() {
+        return process.isMalneon();
     }
 
     public boolean isProcessAdditionalTimeGranted() {

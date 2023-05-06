@@ -78,7 +78,7 @@ public class RunningStatus {
         return pairs.getBiggerRemainingWorkloadPairsComparedWith(readyQueue);
     }
 
-    public Pairs getTimeQuantumExpiredAndNotMalneonPairs(IntegerTime timeQuantum, Double remainingWorkloadBaselineRatio) {
-        return pairs.getTimeQuantumExpiredAndNotMalneonPairs(timeQuantum, remainingWorkloadBaselineRatio);
+    public Pairs getMNPreemptionConditionPairs(IntegerTime timeQuantum) {
+        return pairs.getMNPreemptionConditionPairs(timeQuantum);
     }
 }

@@ -1,5 +1,6 @@
 package com.pssimulator.domain.process;
 
+import com.pssimulator.domain.constant.ProgramConstants;
 import com.pssimulator.domain.grant.Grant;
 import com.pssimulator.domain.processor.Processor;
 import com.pssimulator.domain.ratio.ResponseRatio;
@@ -60,9 +61,9 @@ public class Process {
         return remainingWorkload.isBiggerThan(process.getRemainingWorkload());
     }
 
-    public boolean isMalneon(Double remainingWorkloadBaselineRatio) {
+    public boolean isMalneon() {
         double remainingWorkloadRatio = (double) remainingWorkload.getWorkload() / totalWorkload.getWorkload();
-        return remainingWorkloadRatio <= remainingWorkloadBaselineRatio;
+        return remainingWorkloadRatio <= ProgramConstants.REMAINING_WORKLOAD_BASELINE_RATIO;
     }
 
     public boolean isAdditionalTimeGranted() {
