@@ -252,9 +252,10 @@
 ![image](https://user-images.githubusercontent.com/56067949/234043953-283287d2-499d-42c0-bc6f-d7140c91e2d2.png)
 
 ## Class Diagram
-![image](https://user-images.githubusercontent.com/56067949/234841651-68568cdb-a85f-4b35-b340-9d0bbae9627e.png)
+![image](https://user-images.githubusercontent.com/56067949/236477220-a80fb01f-798a-41ee-9a8c-dcabd84766c9.png)
 
-### Scheduler Class
+### Scheduler (abstract class)
+- 각 알고리즘에 맞는 스케줄러가 상속하는 추상 클래스
 - properties
   - `readyQueue`
     - ready state process들의 ready queue
@@ -268,7 +269,8 @@
   - `schedule()`
     - 요청된 정보로 스케줄링을 진행하고 결과를 리턴
 
-### ReadyQueue Class
+### ReadyQueue (abstract class)
+- 각 알고리즘에 맞는 ready queue가 상속하는 추상 클래스
 - properties
   - `readyQueue`
     - List of ready state process
@@ -283,6 +285,23 @@
     - ready queue에 있는 process들의 waiting time을 1씩 증가시킴
   - `peekCurrentProcesses()`
     - 현재 ready queue에 있는 process들을 priorty가 높은 순서대로 보여주는 process list 리턴
+- 구현 클래스
+  - `FCFSReadyQueue`
+  - `RRReadyQueue`
+  - `SPNReadyQueue`
+  - `SRTNReadyQueue`
+  - `HRRNReadyQueue`
+  - `MNReadyQueue`
+  
+### Preemptible (interface)
+- 선점 알고리즘의 ready queue가 구현해야 하는 interface
+- methods
+  - `addPreemptedProcesses()`
+    - 선점당한 프로세스들을 ready queue에 삽입
+- concrete class
+  - `RRReadyQueue`
+  - `SRTNReadyQueue`
+  - `MNReadyQueue`
 
 ## Tech Stack & Infra
 - Java 11
