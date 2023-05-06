@@ -1,8 +1,17 @@
 # Process-Scheduling-Simulator-API
-2023학년도 1학기 운영체제 Process Scheduling Simulator API
+- 2023학년도 한국기술교육대학교 컴퓨터공학부 1학기 운영체제 팀프로젝트
+- professor: 김덕수 교수님
 
-## developer
-- KimJuwon
+<details>
+<summary>## Developer</summary>
+- API (algorithm)
+  - Juwon Kim
+- View
+  - Sehyun Park
+  - Seungdae Cho
+  - JuYoung Oh
+  
+</details>
 
 ## Algorithm
 - [FCFS (First-Come-First-Service)](https://ko.wikipedia.org/wiki/%EC%84%A0%EC%9E%85_%EC%84%A0%EC%B2%98%EB%A6%AC_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
