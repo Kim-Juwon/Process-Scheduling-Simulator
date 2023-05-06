@@ -129,43 +129,37 @@ public class Pairs {
     }
 
     public boolean isLessRemainingWorkloadProcessExistFrom(ReadyQueue readyQueue) {
-        List<Process> processesInReadyQueue = readyQueue.peekCurrentProcesses();
-
-        processesInReadyQueue.sort(Process::compareByRemainingWorkloadDescending);
-        pairs.sort(Pair::compareByProcessRemainingWorkloadDescending);
-
         return pairs.stream()
-                .anyMatch(pair -> readyQueue.peekCurrentProcesses().stream()
-                        .anyMatch(pair::isProcessRemainingWorkloadBiggerThan)
+                .anyMatch(pair ->
+                        readyQueue.peekCurrentProcesses().stream()
+                                .anyMatch(pair::isProcessRemainingWorkloadBiggerThan)
                 );
     }
 
     public Pairs getBiggerRemainingWorkloadPairsComparedWith(ReadyQueue readyQueue) {
-        List<Process> processesInReadyQueue = readyQueue.peekCurrentProcesses();
+        // 실제 pair 리스트의 순서를 유지하기 위해, 복사된 pair 리스트 생성
+        List<Pair> tempPairs = new LinkedList<>(pairs);
+        tempPairs.sort(Pair::compareByProcessRemainingWorkloadAscending);
 
-        // ready state 프로세스들을 잔여 작업량 내림차순으로 정렬
-        processesInReadyQueue.sort(Process::compareByRemainingWorkloadDescending);
-        // running 프로세스들을 잔여 작업량 내림차순으로 정렬
-        pairs.sort(Pair::compareByProcessRemainingWorkloadDescending);
+        List<Process> readyProcesses = new LinkedList<>(readyQueue.peekCurrentProcesses());
+        readyProcesses.sort(Process::compareByRemainingWorkloadAscending);
 
         List<Pair> biggerRemainingWorkloadPairs = new ArrayList<>();
-        for (int i = 0; i < pairs.size(); i++) {
-            Pair pair = pairs.get(i);
-            for (int j = 0; j < processesInReadyQueue.size(); j++) {
-                Process readyProcess = processesInReadyQueue.get(j);
 
-                /*
-                      ready 프로세스보다 잔여 작업량이 더 큰 running 프로세스가 있다면,
-                      해당 running pair를 추출하고,
-                      해당 running pair 및 ready 프로세스를 삭제
-                 */
-                if (pair.isProcessRemainingWorkloadBiggerThan(readyProcess)) {
-                    biggerRemainingWorkloadPairs.add(pair);
-                    pairs.remove(i);
-                    processesInReadyQueue.remove(j);
-                    i--;
-                    break;
-                }
+        for (int i = 0; i < tempPairs.size(); i++) {
+            if (readyProcesses.isEmpty()) {
+                break;
+            }
+
+            Pair pair = tempPairs.get(i);
+            Process shortestRemainingWorkloadReadyProcess = readyProcesses.get(0);
+
+            if (pair.isProcessRemainingWorkloadBiggerThan(shortestRemainingWorkloadReadyProcess)) {
+                biggerRemainingWorkloadPairs.add(pair);
+
+                tempPairs.remove(i); i--;
+                pairs.remove(pair);
+                readyProcesses.remove(0);
             }
         }
 

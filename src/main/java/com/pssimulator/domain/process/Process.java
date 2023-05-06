@@ -135,7 +135,7 @@ public class Process {
         return responseRatio.compareByDescending(process.getResponseRatio());
     }
 
-    public int compareByRemainingWorkloadDescending(Process process) {
-        return remainingWorkload.compareByDescending(process.getRemainingWorkload());
+    public int compareByRemainingWorkloadAscending(Process process) {
+        return remainingWorkload.compareByAscending(process.getRemainingWorkload());
     }
 }

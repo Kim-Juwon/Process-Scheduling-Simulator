@@ -35,8 +35,6 @@ public class SRTNScheduler extends Scheduler {
             // 현재 시간에 도착한 프로세스가 있다면 ready queue에 삽입
             addArrivedProcessesToReadyQueue();
 
-            Integer preemptedProcessesSize = null;
-
             // running state인 프로세스가 있다면
             if (isRunningProcessExist()) {
                 // running state 프로세스중 현재 시간에 종료된 프로세스가 있다면
@@ -63,29 +61,25 @@ public class SRTNScheduler extends Scheduler {
                     Processes preemptedProcesses = preemptedPairs.getProcesses();
                     Processors preemptedProcessors = preemptedPairs.getProcessors();
 
-                    // 선점당할 프로세스들의 running burst time 초기화 (burst time X)
-                    initializeRunningBurstTimeOfProcessesFrom(preemptedProcesses);
-
-                    preemptedProcessesSize = preemptedProcesses.getSize();
-
-                    // 선점당할 프로세스들을 ready queue에 차례로 삽입
-                    addProcessesToReadyQueueFrom(preemptedProcesses);
-
                     // 종료된 프로세스들에게 할당되었던 프로세서들을 회수
                     bringProcessorsBackFrom(preemptedProcessors);
+
+                    /*
+                         우선순위순으로(잔여 작업량이 적은) ready state 프로세스들에게,
+                         가용 가능한 프로세서들을 차례로 할당하여 running state로 전이
+                     */
+                    assignProcessorsToProcessesAndRegisterToRunningStatus();
+
+                    // 선점당한 프로세스들의 running burst time 초기화 (burst time X)
+                    initializeRunningBurstTimeOfProcessesFrom(preemptedProcesses);
+                    // 선점당한 프로세스들을 ready queue에 차례로 삽입
+                    addProcessesToReadyQueueFrom(preemptedProcesses);
                 }
             }
 
             // ready queue에 프로세스가 존재한다면
             if (isProcessExistInReadyQueue()) {
-                // 선점당한 프로세스들이 없다면, 가용 가능한 프로세서들을 최대한 프로세스들에게 할당하고 running state로 전이
-                if (preemptedProcessesSize == null) {
-                    assignProcessorsToProcessesAndRegisterToRunningStatus();
-                }
-                // 선점당한 프로세스가 있다면, 가용 가능한 프로세서들을 해당 개수만큼까지 할당하고 running state로 전이
-                else {
-                    assignProcessorsToProcessesAndRegisterToRunningStatusUpto(preemptedProcessesSize);
-                }
+                assignProcessorsToProcessesAndRegisterToRunningStatus();
             }
 
             // 쉬고있는 프로세서들은 다음 작업시 시동전력이 필요하다고 변경
@@ -180,22 +174,6 @@ public class SRTNScheduler extends Scheduler {
             Processor nextProcessor = getNextAvailableProcessor();
             Process nextProcess = getNextReadyProcess();
             changeToRunningStatus(Pair.of(nextProcess, nextProcessor));
-        }
-    }
-
-    private void assignProcessorsToProcessesAndRegisterToRunningStatusUpto(int size) {
-        int assignedCount = 1;
-
-        while (isAvailableProcessorExist() && assignedCount <= size) {
-            if (isReadyQueueEmpty()) {
-                break;
-            }
-
-            Processor nextProcessor = getNextAvailableProcessor();
-            Process nextProcess = getNextReadyProcess();
-            changeToRunningStatus(Pair.of(nextProcess, nextProcessor));
-
-            assignedCount++;
         }
     }
 

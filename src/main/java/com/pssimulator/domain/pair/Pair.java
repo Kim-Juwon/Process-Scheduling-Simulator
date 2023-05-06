@@ -45,7 +45,7 @@ public class Pair {
         return process.isAdditionalTimeGranted();
     }
 
-    public int compareByProcessRemainingWorkloadDescending(Pair pair) {
-        return process.compareByRemainingWorkloadDescending(pair.getProcess());
+    public int compareByProcessRemainingWorkloadAscending(Pair pair) {
+        return process.compareByRemainingWorkloadAscending(pair.getProcess());
     }
 }
