@@ -313,60 +313,23 @@
 
 
 ## Class Diagram
-![image](https://user-images.githubusercontent.com/56067949/236477220-a80fb01f-798a-41ee-9a8c-dcabd84766c9.png)
 
-### Scheduler (abstract class)
-- 각 알고리즘에 맞는 스케줄러가 상속하는 추상 클래스
-- properties
-  - `readyQueue`
-    - ready state process들의 ready queue
-  - `runningStatus`
-    - running state에 있는 process 및 그에 할당된 processor 정보
-  - `notArrivedProcesses`
-    - 아직 도착하지 않은(현재 시간이 arrivalTime보다 과거인 경우) process들
-  - `availableProcessors`
-    - 현재 running state에 있는 프로세스들에 할당되어 있지 않은 processor들
-- methods
-  - `schedule()`
-    - 요청된 정보로 스케줄링을 진행하고 결과를 리턴
+<details>
 
-### ReadyQueue (abstract class)
-- 각 알고리즘에 맞는 ready queue가 상속하는 추상 클래스
-- properties
-  - `readyQueue`
-    - List of ready state process
-- methods
-  - `isEmpty()`
-    - ready queue가 비어있는지 확인
-  - `addArrivedProcessFrom()`
-    - 현재 시간이 도착한 process들을 ready queue에 삽입
-  - `getNextProcess()`
-    - ready queue에서 pop한 process
-  - `increaseWaitingTimeOfProcesses()`
-    - ready queue에 있는 process들의 waiting time을 1씩 증가시킴
-  - `peekCurrentProcesses()`
-    - 현재 ready queue에 있는 process들을 priorty가 높은 순서대로 보여주는 process list 리턴
-- 구현 클래스
-  - `FCFSReadyQueue`
-  - `RRReadyQueue`
-  - `SPNReadyQueue`
-  - `SRTNReadyQueue`
-  - `HRRNReadyQueue`
-  - `MNReadyQueue`
-  
-### Preemptible (interface)
-- 선점 알고리즘의 ready queue가 구현해야 하는 interface
-- methods
-  - `addPreemptedProcesses()`
-    - 선점당한 프로세스들을 ready queue에 삽입
-- concrete class
-  - `RRReadyQueue`
-  - `SRTNReadyQueue`
-  - `MNReadyQueue`
+![image](https://user-images.githubusercontent.com/56067949/236689528-039a3bf0-3cc1-4b5c-a3da-4695438f5bd6.png)
+
+</details>
 
 ## Tech Stack & Infra
-- Java 11
-- Spring Boot 2.7.12
-- Maven
-- AWS EC2
-- Nginx
+
+<details>
+
+- Language 
+  - Java 11
+- Framework
+  - Spring Boot 2.7.12
+- Build tool 
+  - Maven
+- Infra 
+  - AWS EC2
+  - Nginx
