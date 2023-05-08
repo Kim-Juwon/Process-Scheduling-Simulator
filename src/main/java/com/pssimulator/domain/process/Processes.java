@@ -44,10 +44,6 @@ public class Processes {
         return processes.isEmpty();
     }
 
-    public int getSize() {
-        return processes.size();
-    }
-
     public List<Process> getArrivedProcessesAt(IntegerTime time) {
         List<Process> arrivedProcesses = new ArrayList<>();
 
