@@ -9,22 +9,41 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class TimeStatusResponseDto {
+    @Getter
     private final Integer from;
+
+    @Getter
     private final Integer to;
+
+    @Getter
     private final List<PairResponseDto> pairs;
+
+    @Getter
     private final List<ProcessorPowerConsumptionDto> processorPowerConsumptions;
+
     private Double totalPowerConsumption;
+
+    @Getter
     private final List<String> readyQueue;
+
+    @Getter
     private final List<ProcessResponseDto> terminatedProcesses;
 
     public static TimeStatusResponseDto from(Integer to) {
         return new TimeStatusResponseDto(to - 1, to, new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>(), new ArrayList<>());
+    }
+
+    public Double getTotalPowerConsumption() {
+        return new BigDecimal(totalPowerConsumption)
+                .setScale(1, RoundingMode.HALF_UP)
+                .doubleValue();
     }
 
     public void addRunningStateFrom(Pairs runningPairs, Processors restingProcessors) {
