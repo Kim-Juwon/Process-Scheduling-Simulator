@@ -124,11 +124,11 @@ public class Process {
     }
 
     public int compareBySPN(Process process) {
-        return remainingWorkload.compareByAscending(process.getRemainingWorkload());
+        return compareByRemainingWorkloadAscending(process.getRemainingWorkload());
     }
 
     public int compareBySRTN(Process process) {
-        return remainingWorkload.compareByAscending(process.getRemainingWorkload());
+        return compareByRemainingWorkloadAscending(process.getRemainingWorkload());
     }
 
     public int compareByHRRN(Process process) {
@@ -136,6 +136,10 @@ public class Process {
     }
 
     public int compareByRemainingWorkloadAscending(Process process) {
-        return remainingWorkload.compareByAscending(process.getRemainingWorkload());
+        return compareByRemainingWorkloadAscending(process.getRemainingWorkload());
+    }
+
+    private int compareByRemainingWorkloadAscending(Workload workload) {
+        return remainingWorkload.compareByAscending(workload);
     }
 }
