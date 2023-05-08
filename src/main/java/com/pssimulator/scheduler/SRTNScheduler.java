@@ -30,7 +30,7 @@ public class SRTNScheduler extends Scheduler {
     public Response schedule(Request request) {
         Response response = Response.create();
 
-        // 아직 도착하지 않은 프로세스, ready state 프로세스, running state 프로세스 중 1개라도 존재할경우 스케줄링
+        // 아직 도착하지 않은 프로세스, ready state 프로세스, running state 프로세스 중 1개라도 존재할경우 스케줄링 계속 진행
         while (isRemainingProcessExist()) {
             // 현재 시간에 도착한 프로세스가 있다면 ready queue에 삽입
             addArrivedProcessesToReadyQueue();
@@ -67,6 +67,9 @@ public class SRTNScheduler extends Scheduler {
                     /*
                          우선순위순으로(잔여 작업량이 적은) ready state 프로세스들에게,
                          가용 가능한 프로세서들을 차례로 할당하여 running state로 전이
+                         (선점된 프로세스들을 addProcessToReadyQueueFrom() 메소드로 priority queue에 삽입하면,
+                          우선순위가 업데이트되어 원래 pop 되야할 프로세스가 pop되지 않는 상황이 발생할 수 있기 때문에
+                          미리 프로세서를 할당하여 running state로 전이하는 것임.)
                      */
                     assignProcessorsToProcessesAndRegisterToRunningStatus();
 
@@ -85,12 +88,12 @@ public class SRTNScheduler extends Scheduler {
             // 쉬고있는 프로세서들은 다음 작업시 시동전력이 필요하다고 변경
             changeAvailableProcessorsToRequireStartupPower();
 
-            // 프로세스들의 WT, BT 계산 및 프로세서들의 누적 전력 소비량 계산
+            // 프로세스들의 WT, BT, 작업량 계산 및 프로세서들의 누적 전력 소비량 계산
             increaseWaitingTimeOfProcessesInReadyQueue();
             updateWorkloadAndBurstTimeOfRunningProcesses();
             updatePowerConsumption();
 
-            // 현재 시간의 스케줄링 상태를 응답 객체에 저장하고, 현재 시간에 대한 정보 적용은 완료되었다고 알림
+            // 현재 시간의 스케줄링 상태를 응답 객체에 저장하고, 현재 시간에 대한 상태 적용은 완료되었다고 알림
             addResultTo(response);
             applyCurrentTimeStatusTo(response);
 
