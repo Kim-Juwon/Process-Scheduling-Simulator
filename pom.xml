@@ -9,8 +9,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.process-scheduling-simulator</groupId>
-    <artifactId>Process-Scheduling-Simulator</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>Process-Scheduling-Simulator-API</artifactId>
+    <version>1.0.0</version>
     <name>Process-Scheduling-Simulator</name>
     <description>Process-Scheduling-Simulator</description>
     <properties>
