@@ -50,6 +50,12 @@ public class SRTNScheduler extends Scheduler {
                     // 종료된 프로세스들에게 할당되었던 프로세서들을 회수
                     bringProcessorsBackFrom(terminatedProcessors);
 
+                    /*
+                         종료된 프로세스수만큼, ready queue에서 대기하고 있는 프로세스들에 프로세서를 할당하여 running state로 전이
+                         (선점 가능 프로세스 존재 여부 확인시 ready queue의 프로세스들을 조회하기 때문에, 충돌을 방지하기 위함)
+                     */
+                    assignProcessorsToProcessesAndRegisterToRunningStatusUpto(terminatedProcesses.getSize());
+
                     // 응답 객체에 현재 시간에 종료된 프로세스들 정보를 저장
                     response.addTerminatedProcessesFrom(terminatedProcesses);
                 }
@@ -177,6 +183,22 @@ public class SRTNScheduler extends Scheduler {
             Processor nextProcessor = getNextAvailableProcessor();
             Process nextProcess = getNextReadyProcess();
             changeToRunningStatus(Pair.of(nextProcess, nextProcessor));
+        }
+    }
+
+    private void assignProcessorsToProcessesAndRegisterToRunningStatusUpto(int size) {
+        int count = 1;
+
+        while (count <= size && isAvailableProcessorExist()) {
+            if (isReadyQueueEmpty()) {
+                break;
+            }
+
+            Processor nextProcessor = getNextAvailableProcessor();
+            Process nextProcess = getNextReadyProcess();
+            changeToRunningStatus(Pair.of(nextProcess, nextProcessor));
+
+            count++;
         }
     }
 
