@@ -3,7 +3,10 @@
 - professor: 김덕수 교수님
 
 ## Service URL
-- https://process-scheduler.link
+- Web
+  - https://process-scheduler.link
+- API
+  - https://api.process-scheduler.link 
 
 ## Developer
 
@@ -27,7 +30,7 @@
 - [SPN (Shortest-Process-Next)](https://ko.wikipedia.org/wiki/%EC%B5%9C%EB%8B%A8_%EC%9E%91%EC%97%85_%EC%9A%B0%EC%84%A0_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
 - [SRTN (Shortest-Remaining-Time-Next)](https://ko.wikipedia.org/wiki/%EC%B5%9C%EC%86%8C_%EC%9E%94%EB%A5%98_%EC%8B%9C%EA%B0%84_%EC%9A%B0%EC%84%A0_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
 - [HRRN (High-Response-Ratio-Next)](https://ko.wikipedia.org/wiki/HRRN_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
-- 말년병장
+- [MN (MalNeon-sergeant)](https://sour-microwave-e23.notion.site/1bb774fd863d4763b9286f4b3fdb7dab)
 
 </details>
 
@@ -78,6 +81,14 @@
 
 </details>
 
+<details>
+
+<summary> MN </summary>
+
+### MN (MalNeon-sergeant)
+
+</details>
+
 ## API Specification
 
 <details>
@@ -92,7 +103,7 @@
   - **arrivalTime**
   - **workload**
 #### Processors
-- `1 <= processors.size() <= 4`
+- `1 <= processors.size() <= 15`
 - 프로세서별 property 
   - **name**
   - **core**
@@ -236,7 +247,7 @@
             "processorPowerConsumptions": [
                 {
                     "processorName": "Core1",
-                    "totalPowerConsumption": 7.3999999999999995
+                    "totalPowerConsumption": 7.4
                 }
             ],
             "totalPowerConsumption": 7.4,
@@ -264,10 +275,10 @@
             "processorPowerConsumptions": [
                 {
                     "processorName": "Core1",
-                    "totalPowerConsumption": 21.200000000000003
+                    "totalPowerConsumption": 21.2
                 }
             ],
-            "totalPowerConsumption": 21.200000000000003,
+            "totalPowerConsumption": 21.2
             "readyQueue": [],
             "terminatedProcesses": [
                 {
@@ -276,7 +287,7 @@
                     "burstTime": 7,
                     "waitingTime": 11,
                     "turnaroundTime": 18,
-                    "normalizedTurnaroundTime": 2.5714285714285716
+                    "normalizedTurnaroundTime": 2.57
                 }
             ]
         },
@@ -292,10 +303,10 @@
             "processorPowerConsumptions": [
                 {
                     "processorName": "Core1",
-                    "totalPowerConsumption": 21.200000000000003
+                    "totalPowerConsumption": 21.2
                 }
             ],
-            "totalPowerConsumption": 21.200000000000003,
+            "totalPowerConsumption": 21.2,
             "readyQueue": [],
             "terminatedProcesses": [
                 {
@@ -320,6 +331,8 @@
 <details>
 
 ![image](https://user-images.githubusercontent.com/56067949/236689528-039a3bf0-3cc1-4b5c-a3da-4695438f5bd6.png)
+
+![domain diagram](https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/8fc9aa55-769c-4b63-a1eb-255a16bb8ca9)
 
 </details>
 
