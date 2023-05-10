@@ -2,6 +2,11 @@
 - 2023학년도 한국기술교육대학교 컴퓨터공학부 1학기 운영체제 팀프로젝트
 - professor: 김덕수 교수님
 
+## Prerequisite Knowledge
+- [Process Scheduling (1/4)](https://www.youtube.com/watch?v=_gNeoGQx-Tc&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=8)
+- [Process Schdeuling (2/4)](https://www.youtube.com/watch?v=r1JVA7yOPAM&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=9)
+- [Process Scheduling (3/4)](https://www.youtube.com/watch?v=keY9Wi7scEs&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=10)
+
 ## Service URL
 - Web
   - https://process-scheduler.link
