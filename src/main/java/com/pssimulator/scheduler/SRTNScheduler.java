@@ -71,13 +71,13 @@ public class SRTNScheduler extends Scheduler {
                     bringProcessorsBackFrom(preemptedProcessors);
 
                     /*
-                         우선순위순으로(잔여 작업량이 적은) ready state 프로세스들에게,
+                         잔여 작업량이 적은 ready state 프로세스들에게,
                          가용 가능한 프로세서들을 차례로 할당하여 running state로 전이
                          (선점된 프로세스들을 addProcessToReadyQueueFrom() 메소드로 priority queue에 삽입하면,
                           우선순위가 업데이트되어 원래 pop 되야할 프로세스가 pop되지 않는 상황이 발생할 수 있기 때문에
                           미리 프로세서를 할당하여 running state로 전이하는 것임.)
                      */
-                    assignProcessorsToProcessesAndRegisterToRunningStatus();
+                    assignProcessorsToProcessesAndRegisterToRunningStatusUpto(preemptedProcesses.getSize());
 
                     // 선점당한 프로세스들의 running burst time 초기화 (burst time X)
                     initializeRunningBurstTimeOfProcessesFrom(preemptedProcesses);
