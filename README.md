@@ -87,6 +87,7 @@
 <summary> MN </summary>
 
 ### MN (MalNeon-sergeant)
+![image](https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/cc3b1672-5b68-4192-920b-e32b86fb1b59)
 
 </details>
 
