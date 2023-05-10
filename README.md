@@ -68,7 +68,8 @@
 <summary> SRTN </summary>
 
 ### SRTN (Shortest-Remaining-Time-Next)
-![image](https://user-images.githubusercontent.com/56067949/234043872-daa5732b-7ed7-4af9-be96-331aa54862d6.png)
+![image](https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/581564c9-c491-438e-ad91-8334eae56956)
+
 
 </details>
 
