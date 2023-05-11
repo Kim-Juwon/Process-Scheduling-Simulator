@@ -6,23 +6,39 @@
 
 
 ## Prerequisite Knowledge
+
+<details>
+
 - [Process Scheduling (1/4)](https://www.youtube.com/watch?v=_gNeoGQx-Tc&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=8)
 - [Process Schdeuling (2/4)](https://www.youtube.com/watch?v=r1JVA7yOPAM&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=9)
 - [Process Scheduling (3/4)](https://www.youtube.com/watch?v=keY9Wi7scEs&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=10)
 
-## Service URL
-- Web
-  - https://process-scheduler.link
-- API
-  - https://api.process-scheduler.link 
+</details>  
+  
+## URL
 
+<details>
+
+- Web
+  - Service 
+    - https://process-scheduler.link
+  - Source code
+    - https://github.com/BBOXEEEE/Process-Scheduling-Simulator-Web
+- API
+  - Service 
+    - https://api.process-scheduler.link
+  - Source code
+    - https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API 
+
+</details>
+  
 ## Developer
 
 <details>
 
 - API (algorithm)
   - Juwon Kim
-- View
+- View (simulator)
   - Sehyun Park
   - Seungdae Cho
   - JuYoung Oh
@@ -105,7 +121,9 @@
 
 <summary> Request </summary>
 
-### Request
+## `POST /schedule`
+  
+### HTTP Body
 #### Processes
 - `1 <= processes.size() <= 99`
 - 프로세스별 property 
@@ -177,7 +195,7 @@
 <details>
 <summary> Response </summary>
 
-### Response
+### HTTP Body
 - 시간 구간(n ~ n + 1초)별 상태
 
 #### from
