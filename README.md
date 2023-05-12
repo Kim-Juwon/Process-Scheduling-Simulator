@@ -7,8 +7,8 @@
 ## Example video
 
 <details>
-
-![Screen-Recording-2023-05-12-at-1 49 21-PM](https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/b2610a28-a5c3-433c-bf03-eef9ba8c058b)
+  
+![Screen-Recording-2023-05-12-at-11 49 29-PM](https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/51e43751-9746-4d50-a40a-c114196d1e05)
 
 </details>
   
