@@ -2,9 +2,16 @@
 - 2023학년도 한국기술교육대학교 컴퓨터공학부 1학기 운영체제 팀프로젝트
 - professor: 김덕수 교수님
 
-<img width="900" alt="image" src="https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/141ac93b-110d-45c5-a850-2749071fc998">
+<img width="500" alt="image" src="https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/08adf662-157f-4f11-8302-17e776adf1b7">
 
+## Example video
 
+<details>
+
+![Screen-Recording-2023-05-12-at-1 49 21-PM](https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/b2610a28-a5c3-433c-bf03-eef9ba8c058b)
+
+</details>
+  
 ## Prerequisite Knowledge
 
 <details>
