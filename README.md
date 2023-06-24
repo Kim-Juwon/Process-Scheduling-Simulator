@@ -12,16 +12,53 @@
 
 </details>
   
-## Prerequisite Knowledge
+## What is Process Scheduling?
+- Process 스케줄링은 multi-tasking system에서 여러 프로세스들에 프로세서 할당(dispatch) 순서를 결정하는 작업입니다.
+- 목적은 성능 향상에 있습니다.
+- 성능 지표는 굉장히 많은 종류가 있으며, 대표적인 지표는 다음과 같습니다.
+    - mean response time (평균 응답 시간)
+    - throughput (단위 시간당 처리량)
+    - resource utilization (단위 시간당 자원 활용도)
 
-<details>
+## Basic Process Scheduling Algorithms
+FCFS, RR, SPN, SRTN, HRRN
 
-- [Process Scheduling (1/4)](https://www.youtube.com/watch?v=_gNeoGQx-Tc&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=8)
-- [Process Schdeuling (2/4)](https://www.youtube.com/watch?v=r1JVA7yOPAM&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=9)
-- [Process Scheduling (3/4)](https://www.youtube.com/watch?v=keY9Wi7scEs&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=10)
+### `FCFS (First Come First Service)`
+- 도착한 순서대로 프로세스를 dispatch합니다.
+- Non-preemptive 알고리즘입니다.
 
-</details>  
-  
+<img width="500" alt="image" src="https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/fa866ce9-0043-4706-ae74-97a8756f940d">
+
+- Batch system에 적합합니다.
+  - 빠른 응답시간보다는 작업 처리에 대한 성능이 더 중요하기 때문입니다.
+- time-sharing(interactive) system에 부적합합니다.
+- 장점
+  - resource utilization이 높습니다.  
+    - 불필요한 스케줄링(context switching)이 이루어지지 않아 프로세서가 지속적으로 작업을 수행할 수 있기 때문입니다.
+- 단점
+  - convoy effect가 발생합니다.
+    - burst time이 긴 프로세스에 의해 다른 프로세스들의 대기시간이 길어지는 현상입니다. 
+  - 평균 respone time이 깁니다.
+    - convoy effect가 원인   
+
+### `RR (Round Robin)`
+- 도착한 순서대로 프로세스를 dispatch 하되, **프로세서 사용 제한 시간(time quantum)** 이 존재합니다.
+- Preemptive 알고리즘입니다.
+
+<img width="500" alt="image" src="https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/75b4137b-7bb9-4743-98cc-8400f43a2dce">
+
+- running 상태의 프로세스중 time quantum이 만료된 프로세스가 있고, ready 상태의 프로세스가 있다면 선점됩니다.
+- 장점
+  - time-sharing(interavtive) system에 적합합니다.
+  - 특정 프로세스들의 자원 독점을 방지합니다.
+- 단점
+  - 잦은 ontext switching으로 인해 overhead가 큽니다.
+- time quantum이 시스템 성능을 결정 짓는 핵심 요소입니다.
+  - very large(infinite) time quantum -> **FCFS**
+  - very small time quantum -> processor sharing
+    - 사용자는 모든 프로세스가 각각의 프로세서 위에서 실행되는 것처럼 느끼게 됩니다.    
+    - (프로세서의 작업 수행 체감 속도) = (프로세서의 실제 작업 속도 / 프로세서의 개수)
+      
 ## URL
 
 <details>
