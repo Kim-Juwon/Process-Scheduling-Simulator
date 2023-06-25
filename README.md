@@ -13,6 +13,9 @@
 </details>
   
 ## What is Process Scheduling?
+
+<details>
+
 - Process 스케줄링은 multi-tasking system에서 여러 프로세스들에 프로세서 할당(dispatch) 순서를 결정하는 작업입니다.
 - 목적은 성능 향상에 있습니다.
 - 성능 지표는 굉장히 많은 종류가 있으며, 대표적인 지표는 다음과 같습니다.
@@ -20,45 +23,95 @@
     - throughput (단위 시간당 처리량)
     - resource utilization (단위 시간당 자원 활용도)
 
+</details>
+
 ## Basic Process Scheduling Algorithms
 FCFS, RR, SPN, SRTN, HRRN
 
+<details>
+
 ### `FCFS (First Come First Service)`
-- 도착한 순서대로 프로세스를 dispatch합니다.
-- Non-preemptive 알고리즘입니다.
+- 도착한 순서대로 프로세스를 dispatch
+- Non-preemptive 알고리즘
 
 <img width="500" alt="image" src="https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/fa866ce9-0043-4706-ae74-97a8756f940d">
 
-- Batch system에 적합합니다.
-  - 빠른 응답시간보다는 작업 처리에 대한 성능이 더 중요하기 때문입니다.
-- time-sharing(interactive) system에 부적합합니다.
+- Batch system에 적합
+  - 빠른 응답시간보다는 작업 처리에 대한 성능이 더 중요하기 때문
+- time-sharing(interactive) system에 부적합
 - 장점
-  - resource utilization이 높습니다.  
-    - 불필요한 스케줄링(context switching)이 이루어지지 않아 프로세서가 지속적으로 작업을 수행할 수 있기 때문입니다.
+  - resource utilization이 높음
+    - 불필요한 스케줄링(context switching)이 이루어지지 않아 프로세서가 지속적으로 작업을 수행할 수 있기 때문
 - 단점
-  - convoy effect가 발생합니다.
-    - burst time이 긴 프로세스에 의해 다른 프로세스들의 대기시간이 길어지는 현상입니다. 
-  - 평균 respone time이 깁니다.
+  - convoy effect가 발생
+    - burst time이 긴 프로세스에 의해 다른 프로세스들의 대기시간이 길어지는 현상
+  - 평균 respone time이 김
     - convoy effect가 원인   
 
 ### `RR (Round Robin)`
-- 도착한 순서대로 프로세스를 dispatch 하되, **프로세서 사용 제한 시간(time quantum)** 이 존재합니다.
-- Preemptive 알고리즘입니다.
+- 도착한 순서대로 프로세스를 dispatch 하되, **프로세서 사용 제한 시간(time quantum)** 이 존재
+- Preemptive 알고리즘
 
 <img width="500" alt="image" src="https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/75b4137b-7bb9-4743-98cc-8400f43a2dce">
 
-- running 상태의 프로세스중 time quantum이 만료된 프로세스가 있고, ready 상태의 프로세스가 있다면 선점됩니다.
+- running 상태의 프로세스중 time quantum이 만료된 프로세스가 있고, ready 상태의 프로세스가 있다면 선점
 - 장점
-  - time-sharing(interavtive) system에 적합합니다.
-  - 특정 프로세스들의 자원 독점을 방지합니다.
+  - time-sharing(interavtive) system에 적합
+  - 특정 프로세스들의 자원 독점을 방지
 - 단점
-  - 잦은 ontext switching으로 인해 overhead가 큽니다.
-- time quantum이 시스템 성능을 결정 짓는 핵심 요소입니다.
+  - 잦은 context switching으로 인해 overhead가 큼
+- time quantum이 시스템 성능을 결정 짓는 핵심 요소
   - very large(infinite) time quantum -> **FCFS**
   - very small time quantum -> processor sharing
-    - 사용자는 모든 프로세스가 각각의 프로세서 위에서 실행되는 것처럼 느끼게 됩니다.    
-    - (프로세서의 작업 수행 체감 속도) = (프로세서의 실제 작업 속도 / 프로세서의 개수)
-      
+    - 사용자는 모든 프로세스가 각각의 프로세서 위에서 실행되는 것처럼 느끼게 됨    
+    - (프로세서의 작업 수행 체감 속도) = (프로세서의 실제 작업 속도 * 프로세서의 개수)
+
+### `SPN (Shortest Process Next)`
+- burst time이 가장 작은 프로세스를 dispatch
+- Non-preemptive 알고리즘
+
+<img width="500" alt="image" src="https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/1516050d-6b0e-4b7b-9055-37698828b8a9">
+
+- 장점
+  - 프로세스들의 평균 waiting time과 response time이 짧음
+  - 시스템 내 프로세스들의 수를 최소화
+    - 스케줄링 overhead가 감소하고, 메모리 절약을 할 수 있어 시스템의 효율을 향상시킴
+- 단점
+  - burst time이 상대적으로 긴 프로세스는 **starvation** 현상이 발생할 수 있음
+  - burst time을 예측하기 어려움
+    - 예측하기 위한 기법이 필요 
+
+### `SRTN (Shortest Remaining Time Next)`
+- SPN을 preemptive 방식으로 변형한 알고리즘
+- 잔여 burst time이 running 프로세스보다 더 적은 ready 상태의 프로세스가 있다면 선점
+
+<img width="500" alt="image" src="https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/0a9280f3-d9b5-48e3-a6dd-92b63b578ddd">
+
+- 장점
+  - SPN의 장점을 극대화
+- 단점
+  - 잔여 burst time을 계속해서 추적해야 하는 overhead
+  - 잦은 context switching으로 인한 overhead
+- 위 단점으로 인해 구현 및 사용이 비현실적 
+
+### `HRRN (High Response Ratio Next)`
+- SPN + **Aging** concept을 적용한 알고리즘
+- Non-preemptive 알고리즘
+- Aging concept
+  - 프로세스의 waiting time을 고려하여 우선순위 설정
+  - response ratio가 가장 높은 프로세스가 가장 우선순위가 높음
+    - response ratio: `(WT + BT) / BT`
+
+<img width="500" alt="image" src="https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/03632d5a-5954-40a4-9f3c-cf3ad34e420c">
+
+- 장점
+  - SPN의 장점을 취하면서도 starvation을 방지함
+- 단점
+  - ready 상태 프로세스들의 우선순위를 지속적으로 업데이트 필요   
+  - burst time 예측 기법 필요   
+
+</details>
+
 ## URL
 
 <details>
