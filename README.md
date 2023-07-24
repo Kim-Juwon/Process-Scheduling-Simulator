@@ -1,13 +1,16 @@
 # Process-Scheduling-Simulator-API
-- 2023학년도 한국기술교육대학교 컴퓨터공학부 1학기 운영체제 팀프로젝트
-- professor: 김덕수 교수님
+- 한국기술교육대학교 컴퓨터공학부 23-1학기 [운영체제(김덕수 교수님)](https://www.youtube.com/playlist?list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN) 팀프로젝트 
 
 <img width="500" alt="image" src="https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/08adf662-157f-4f11-8302-17e776adf1b7">
 
-## Example video
+## Video
 
 <details>
-  
+
+### Youtube
+- [Process Scheduling Simulator 사용법](https://youtu.be/T0AJoeZl174)
+
+### GIF
 ![Screen-Recording-2023-05-12-at-11 49 29-PM](https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/51e43751-9746-4d50-a40a-c114196d1e05)
 
 </details>
@@ -134,11 +137,11 @@ FCFS, RR, SPN, SRTN, HRRN
 <details>
 
 - API (algorithm)
-  - Juwon Kim
+  - 김주원
 - View (simulator)
-  - Sehyun Park
-  - Seungdae Cho
-  - JuYoung Oh
+  - 박세현
+  - 조승대
+  - 오주영
   
 </details>
 
