@@ -1,9 +1,9 @@
 # Process-Scheduling-Simulator-API
-- 한국기술교육대학교 컴퓨터공학부 23-1학기 [운영체제(김덕수 교수님)](https://www.youtube.com/playlist?list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN) 팀프로젝트 
+- 한국기술교육대학교 컴퓨터공학부 23-1학기 [운영체제(김덕수 교수님)](https://www.youtube.com/playlist?list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN) 팀프로젝트 API 
 
 <img width="500" alt="image" src="https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/08adf662-157f-4f11-8302-17e776adf1b7">
 
-## Video
+## 시연 영상
 
 <details>
 
@@ -15,7 +15,7 @@
 
 </details>
   
-## What is Process Scheduling?
+## '프로세스 스케줄링' 이란?
 
 <details>
 
@@ -28,12 +28,12 @@
 
 </details>
 
-## Basic Process Scheduling Algorithms
+## 기본 알고리즘
 FCFS, RR, SPN, SRTN, HRRN
 
 <details>
 
-### `FCFS (First Come First Service)`
+### [FCFS (First-Come-First-Service)](https://ko.wikipedia.org/wiki/%EC%84%A0%EC%9E%85_%EC%84%A0%EC%B2%98%EB%A6%AC_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
 - 도착한 순서대로 프로세스를 dispatch
 - Non-preemptive 알고리즘
 
@@ -51,7 +51,7 @@ FCFS, RR, SPN, SRTN, HRRN
   - 평균 respone time이 김
     - convoy effect가 원인   
 
-### `RR (Round Robin)`
+### [RR (Round-Robin)](https://ko.wikipedia.org/wiki/%EB%9D%BC%EC%9A%B4%EB%93%9C_%EB%A1%9C%EB%B9%88_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
 - 도착한 순서대로 프로세스를 dispatch 하되, **프로세서 사용 제한 시간(time quantum)** 이 존재
 - Preemptive 알고리즘
 
@@ -69,7 +69,7 @@ FCFS, RR, SPN, SRTN, HRRN
     - 사용자는 모든 프로세스가 각각의 프로세서 위에서 실행되는 것처럼 느끼게 됨    
     - (프로세서의 작업 수행 체감 속도) = (프로세서의 실제 작업 속도 * 프로세서의 개수)
 
-### `SPN (Shortest Process Next)`
+### [SPN (Shortest-Process-Next)](https://ko.wikipedia.org/wiki/%EC%B5%9C%EB%8B%A8_%EC%9E%91%EC%97%85_%EC%9A%B0%EC%84%A0_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
 - burst time이 가장 작은 프로세스를 dispatch
 - Non-preemptive 알고리즘
 
@@ -84,7 +84,7 @@ FCFS, RR, SPN, SRTN, HRRN
   - burst time을 예측하기 어려움
     - 예측하기 위한 기법이 필요 
 
-### `SRTN (Shortest Remaining Time Next)`
+### [SRTN (Shortest-Remaining-Time-Next)](https://ko.wikipedia.org/wiki/%EC%B5%9C%EC%86%8C_%EC%9E%94%EB%A5%98_%EC%8B%9C%EA%B0%84_%EC%9A%B0%EC%84%A0_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
 - SPN을 preemptive 방식으로 변형한 알고리즘
 - 잔여 burst time이 running 프로세스보다 더 적은 ready 상태의 프로세스가 있다면 선점
 
@@ -97,7 +97,7 @@ FCFS, RR, SPN, SRTN, HRRN
   - 잦은 context switching으로 인한 overhead
 - 위 단점으로 인해 구현 및 사용이 비현실적 
 
-### `HRRN (High Response Ratio Next)`
+### [HRRN (High-Response-Ratio-Next)](https://ko.wikipedia.org/wiki/HRRN_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
 - SPN + **Aging** concept을 적용한 알고리즘
 - Non-preemptive 알고리즘
 - Aging concept
@@ -115,50 +115,7 @@ FCFS, RR, SPN, SRTN, HRRN
 
 </details>
 
-## URL
-
-<details>
-
-- Web
-  - Service 
-    - https://process-scheduler.link
-  - Source code
-    - https://github.com/BBOXEEEE/Process-Scheduling-Simulator-Web
-- API
-  - Service 
-    - https://api.process-scheduler.link
-  - Source code
-    - https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API 
-
-</details>
-  
-## Developer
-
-<details>
-
-- API (algorithm)
-  - 김주원
-- View (simulator)
-  - 박세현
-  - 조승대
-  - 오주영
-  
-</details>
-
-## Algorithm
-
-<details>
-
-- [FCFS (First-Come-First-Service)](https://ko.wikipedia.org/wiki/%EC%84%A0%EC%9E%85_%EC%84%A0%EC%B2%98%EB%A6%AC_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
-- [RR (Round-Robin)](https://ko.wikipedia.org/wiki/%EB%9D%BC%EC%9A%B4%EB%93%9C_%EB%A1%9C%EB%B9%88_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
-- [SPN (Shortest-Process-Next)](https://ko.wikipedia.org/wiki/%EC%B5%9C%EB%8B%A8_%EC%9E%91%EC%97%85_%EC%9A%B0%EC%84%A0_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
-- [SRTN (Shortest-Remaining-Time-Next)](https://ko.wikipedia.org/wiki/%EC%B5%9C%EC%86%8C_%EC%9E%94%EB%A5%98_%EC%8B%9C%EA%B0%84_%EC%9A%B0%EC%84%A0_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
-- [HRRN (High-Response-Ratio-Next)](https://ko.wikipedia.org/wiki/HRRN_%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81)
-- [MN (MalNeon-sergeant)](https://sour-microwave-e23.notion.site/1bb774fd863d4763b9286f4b3fdb7dab)
-
-</details>
-
-## Algorithm Flow chart
+## 알고리즘 구현 Flow chart
 
 <details>
 
@@ -208,14 +165,14 @@ FCFS, RR, SPN, SRTN, HRRN
 
 <details>
 
-<summary> MN </summary>
+<summary> 말년병장 </summary>
 
-### MN (MalNeon-sergeant)
+### 말년병장
 ![image](https://github.com/Kim-Juwon/Process-Scheduling-Simulator-API/assets/56067949/cc3b1672-5b68-4192-920b-e32b86fb1b59)
 
 </details>
 
-## API Specification
+## API 명세
 
 <details>
 
@@ -454,7 +411,7 @@ FCFS, RR, SPN, SRTN, HRRN
 </details>
 
 
-## Class Diagram
+## 클래스 다이어그램
 
 <details>
 
@@ -464,7 +421,7 @@ FCFS, RR, SPN, SRTN, HRRN
 
 </details>
 
-## Tech Stack & Infra
+## 사용 기술
 
 <details>
 
